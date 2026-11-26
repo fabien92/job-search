@@ -29,7 +29,8 @@ If `private/CLAUDE.md` is missing, run `/setup` and write its output there.
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
 - `cover_letters/` - LaTeX cover letters (custom cover.cls template)
 - `.claude/skills/` - AI skill definitions for the application workflow
-- `.agents/skills/` - Job portal CLIs copied in from community-portals (none shipped)
+- `.agents/skills/` - Job portal CLIs (this fork ships the 13 portals JobBot uses; add more with `/add-portal`)
+- `jobbot/` - JobBot: scheduled scans, Telegram bot, CV building (see `jobbot/README.md`)
 
 ## Workflow for New Job Applications
 1. User provides a job posting (URL or text)

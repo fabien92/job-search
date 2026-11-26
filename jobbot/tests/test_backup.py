@@ -42,6 +42,20 @@ class Backup(JobbotTestCase):
         self.assertIn("backup", log.stdout)
         self.assertEqual(backup.run(), "no change")
 
+    def test_plain_folder_is_copied_without_git(self):
+        """No clone of a backup repository (the optional install step skipped): a local copy, no error."""
+        plain = self.tmp / "plain-backup"
+        os.environ["JOBBOT_BACKUP_DIR"] = str(plain)
+        self.assertIn("not a git repository", backup.run())
+        self.assertTrue((plain / "jobbot-state" / "seen_index.json").is_file())
+        self.assertFalse((plain / ".git").exists())
+
+    def test_repository_without_remote_commits_only(self):
+        local = self.tmp / "local-repo"
+        subprocess.run(["git", "init", "-q", "-b", "main", str(local)], check=True)
+        os.environ["JOBBOT_BACKUP_DIR"] = str(local)
+        self.assertTrue(backup.run().startswith("committed (no remote"))
+
     def test_dry_run(self):
         os.environ["JOBBOT_DRY_RUN"] = "1"
         self.assertTrue(backup.run().startswith("dry-run"))

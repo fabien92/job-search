@@ -47,9 +47,10 @@ def sh(argv: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess:
 
 def run() -> str:
     target = dest()
-    if not (target / ".git").is_dir():
-        raise RuntimeError(f"{target} is not a git clone of jobbot-data")
+    is_repo = (target / ".git").is_dir()
     dry = common.dry_run()
+    if not is_repo and not dry:
+        target.mkdir(parents=True, exist_ok=True)  # plain local copy: no git, nothing leaves the Mac
     with common.state_lock(timeout=600):
         for src, name in sources():
             if not src.exists():
@@ -66,6 +67,8 @@ def run() -> str:
                 raise RuntimeError(f"rsync {name}: {proc.stderr.strip()[-300:]}")
     if dry:
         return "dry-run: rsync simulated, no commit"
+    if not is_repo:
+        return f"copied to {target} (not a git repository: nothing committed or pushed)"
     sh(["git", "add", "-A"], cwd=target)
     if sh(["git", "diff", "--cached", "--quiet"], cwd=target).returncode == 0:
         return "no change"
@@ -73,6 +76,8 @@ def run() -> str:
     proc = sh(["git", "-c", "user.name=jobbot", "-c", "user.email=jobbot@localhost", "commit", "-q", "-m", msg], cwd=target)
     if proc.returncode != 0:
         raise RuntimeError(f"git commit: {proc.stderr.strip()[-300:]}")
+    if "origin" not in sh(["git", "remote"], cwd=target).stdout.split():
+        return f"committed (no remote: nothing pushed): {msg}"
     branch = sh(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=target).stdout.strip() or "main"
     proc = sh(["git", "push", "-q", "origin", f"HEAD:{branch}"], cwd=target)
     if proc.returncode != 0:

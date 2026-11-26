@@ -69,7 +69,7 @@ scoring: rules
 | Queue, `/sent`, reminders, recaps, backup | yes | yes, identical |
 
 The keyword score, out of 100: 35 to start, +30 when the posting's title contains every word of one of
-your target titles, +6 for each `Strong` keyword found in the posting (4 at most), +2 for each
+your target titles (or +15 when it only contains one of your `Keywords`), +6 for each `Strong` keyword found in the posting (4 at most), +2 for each
 `Secondary` keyword (5 at most). A posting whose title matches a target title therefore passes the
 default alert threshold of 60. You write those lists, and two optional ones, in `config/criteria.md`:
 
@@ -198,7 +198,8 @@ portal's `SKILL.md` before pointing it at another field.
 **Career-page connectors** — for the companies of your list (`companies-seed.md`, `/discover`,
 `/accept`). JobBot detects which recruiting software a company's career page uses and, when a connector
 exists, reads its postings from the vendor's public feed. The key `companies` (`/search companies`)
-runs them.
+runs them. The first time a connector needs a vendor's host, that host is proposed to you on Telegram
+(`/sites`) and nothing is read from it until you answer `/allow`.
 
 | Recruiting software | Status |
 |---|---|

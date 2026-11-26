@@ -194,7 +194,7 @@ def run(short_id: str, force: bool = False) -> int:
 
     fallback = default_variant()
     variant = job.get("variant") if job.get("variant") in build_cv_variants.variants() else fallback
-    company, title = job.get("company") or "entreprise", job.get("title") or "poste"
+    company, title = job.get("company") or "company", job.get("title") or "role"
     appdir = apps.application_dir(short_id, company, title)
     appdir.mkdir(parents=True, exist_ok=True)
     (appdir / ".jobbot-id").write_text(short_id + "\n", encoding="utf-8")

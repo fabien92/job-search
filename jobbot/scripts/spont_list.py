@@ -66,6 +66,11 @@ def build(chosen: list[dict]) -> str:
 
 def main() -> int:
     schedule = common.load_schedule()
+    import rule_scorer
+
+    if rule_scorer.enabled(schedule):  # /spont needs Claude: no list to suggest with `scoring: rules`
+        common.log("spont_list: skipped (scoring: rules)")
+        return 0
     chosen = pick(schedule)
     tg.send(build(chosen))
     if chosen and not common.dry_run():

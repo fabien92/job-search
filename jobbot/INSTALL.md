@@ -60,7 +60,8 @@ sudo sysadminctl -addUser jobbot -fullName "Job Bot" -password -
 id jobbot | grep -q "(admin)" && echo "WARNING: admin" || echo "OK: standard user"
 ```
 
-Open a terminal as that user. **Steps 3 to 10 are all run in this session:**
+Open a terminal as that user. **Steps 3 to 13 are run in this session** (step 12 says when to leave it
+for the admin account):
 
 ```bash
 su - jobbot
@@ -170,7 +171,7 @@ nano ~/ai-job-search/jobbot/config/schedule.yaml
 | `scoring:` | Needs | What you get |
 |---|---|---|
 | `claude` (default) | Claude subscription | Each posting is read and scored against your profile, with a one-line justification, contract and remote details, a CV variant chosen per posting, and optional adaptation of the CV text on `/go`. `/discover` and `/spont` work. |
-| `rules` | nothing | A keyword score from `criteria.md`: title match, then your strong and secondary keywords found in the posting. Hard exclusions (titles, companies, language level, contract) still apply. `/go` sends the CV variant named by `default_variant`, unchanged. `/discover` and `/spont` are unavailable. No AI is called, nothing is billed. |
+| `rules` | nothing | A keyword score from `criteria.md`: title match (or a keyword in the title), then your strong and secondary keywords found in the posting. Hard exclusions (titles, companies, language level, contract) still apply. `/go` sends the CV variant named by `default_variant`, unchanged. `/discover` and `/spont` are unavailable. No AI is called, nothing is billed. |
 
 Set `timezone` in the same file to the Mac's time zone.
 
@@ -188,8 +189,20 @@ nano private/candidate.yaml      # name, e-mail, phone, LinkedIn, city
 nano private/identity.tex        # the same identity, for the LaTeX CV
 ```
 
+Then create the private copies of the profile files. Claude writes your real profile into these copies
+and leaves the tracked templates untouched; **without this step `/setup` would write your personal data
+into tracked files**:
+
+```bash
+cd ~/ai-job-search
+mkdir -p private/skills/job-application-assistant private/cv
+for n in 01 02 04 05 06 07; do cp .claude/skills/job-application-assistant/$n-*.md private/skills/job-application-assistant/; done
+cp cv/main_example.tex private/cv/
+```
+
 **With Claude:** start `claude` in `~/ai-job-search` and run `/setup`. It interviews you, or imports an
-existing CV placed in `documents/`, and writes your profile under `private/`. The scoring reads it.
+existing CV placed in `documents/`, and writes your profile into the `private/` copies above and into
+`private/CLAUDE.md`. The scoring reads it. Check afterwards that `git status` shows no modified file.
 
 **In rules mode** no profile is needed: the score uses `criteria.md` only.
 
@@ -209,7 +222,7 @@ nano ~/ai-job-search/jobbot/config/regions.yaml
 | `schedule.yaml` | Scoring mode, scan frequency, alert threshold, budget caps, recap times, queries per portal (0 turns a portal off). |
 | `rejection-rules.md` | Starts empty. `/no <ID> <reason>` adds a rule. |
 
-With Claude, also read the three prompts in `jobbot/commands/`. They contain a few rules written for the
+With Claude, also read the four prompts in `jobbot/commands/`. They contain a few rules written for the
 original author's search (language-level rejects, the list of CV variants, the kind of companies to
 look for). Adapt them, then copy them where Claude Code reads them:
 
@@ -249,8 +262,10 @@ Always run these two scripts yourself: Claude is denied write access to the whit
 cd ~/ai-job-search
 mkdir -p documents/cv/jobbot && cp -R jobbot/examples/cv/. documents/cv/jobbot/
 jobbot/.venv/bin/python jobbot/scripts/build_cv_variants.py
-open documents/cv/jobbot/pdf/delivery.pdf
 ```
+
+Look at the result: `documents/cv/jobbot/pdf/delivery.pdf` (from the admin account's Finder:
+`/Users/jobbot/ai-job-search/documents/cv/jobbot/pdf/`).
 
 Every variant must report `"ok": true` and 2 pages. Then replace the example content with yours:
 `blocks/*.tex` hold the facts (experience, education, skills), `variants/*.tex` hold what changes per
@@ -311,8 +326,11 @@ Six lines must appear. The bot now runs permanently and the first scan starts wi
 
 ## 13. Backup (optional, jobbot)
 
-Every night `documents/`, the application tracker and `jobbot/state/` are copied to `~/jobbot-data`.
-To also keep them off the Mac, make that folder a clone of a **private** repository of yours:
+Every night `documents/`, the application tracker and `jobbot/state/` are copied to `~/jobbot-data`
+(`JOBBOT_BACKUP_DIR` to choose another folder). Nothing else is needed: with a plain folder the copy
+stays on the Mac. To also keep it off the Mac, make that folder a clone of a **private** repository of
+yours before the first night (the `jobbot` user needs an SSH key registered for that repository, for
+example a deploy key with write access); the backup then commits and pushes:
 
 ```bash
 cd ~ && git clone git@github.com:YOUR_GITHUB_USER/jobbot-data.git   # <- change
