@@ -11,6 +11,11 @@ Claude Code framework this repository is forked from. The framework's own comman
 
 **Install it:** follow [`INSTALL.md`](INSTALL.md), step by step.
 
+**Contents:** [How it works](#how-it-works) · [Free mode, without Claude](#free-mode-without-a-claude-subscription) ·
+[Telegram](#telegram-your-own-bot) · [Language](#language-of-the-messages) · [Commands](#commands) ·
+[Portals and connectors](#portals-and-connectors-included) · [Adding a portal](#adding-a-portal) ·
+[Configuration](#what-you-configure) · [Safety](#safety)
+
 ## How it works
 
 ```
@@ -42,6 +47,83 @@ Claude Code framework this repository is forked from. The framework's own comman
    posting, inside strict limits (see "Safety").
 6. **Follow up.** After `/sent <ID>` the application is recorded in the tracker; you get a reminder
    after 10 days without an answer, a daily recap and a weekly report. State is backed up every night.
+
+## Free mode: without a Claude subscription
+
+JobBot runs entirely without Claude, at no cost. In `config/schedule.yaml` set:
+
+```yaml
+scoring: rules
+```
+
+| | `scoring: claude` | `scoring: rules` (free) |
+|---|---|---|
+| Needs | Claude Pro or Max, Claude Code | nothing: no account, no token |
+| Scanning, filtering, de-duplication | yes | yes, identical |
+| Score | Claude reads the posting against your profile | keywords from `criteria.md` (below) |
+| Reason shown with the alert | one sentence written by Claude | the title and keywords that matched |
+| Contract, remote, salary details | read from the posting | salary only when the portal gives it |
+| Rules learnt with `/no <ID> <reason>` | applied by Claude | stored, not applied (use the `Reject` line below) |
+| CV on `/go` | variant chosen per posting, text optionally adapted | the `default_variant`, unchanged |
+| `/discover`, `/spont` | available | unavailable |
+| Queue, `/sent`, reminders, recaps, backup | yes | yes, identical |
+
+The keyword score, out of 100: 35 to start, +30 when the posting's title contains every word of one of
+your target titles, +6 for each `Strong` keyword found in the posting (4 at most), +2 for each
+`Secondary` keyword (5 at most). A posting whose title matches a target title therefore passes the
+default alert threshold of 60. You write those lists, and two optional ones, in `config/criteria.md`:
+
+```markdown
+## Scoring profile
+- Strong : IT delivery · CI/CD · project manager
+- Secondary : python · jira
+
+## Rules mode
+- Reject : verhandlungssicher · native German · freelance
+- Flag : fließend · befristet
+```
+
+A `Reject` term found in a posting rejects it; a `Flag` term keeps it and adds a warning to the alert.
+You can switch between the two modes at any time; nothing else changes. Without Claude you also skip
+the framework's `/setup`: fill in `private/candidate.yaml`, `private/identity.tex` and the example CV by
+hand (`INSTALL.md`, steps 7 and 10).
+
+## Telegram: your own bot
+
+There is no shared bot. Each user creates their own bot with Telegram's **@BotFather** (free, two
+minutes) and talks to it in their own chat; nothing passes through anyone else's bot or account. The
+bot's token and your chat id go into one file on your Mac, never in the repository:
+
+```
+~/.config/jobbot/secrets.env
+
+TELEGRAM_TOKEN=...            the password of your bot, given by @BotFather
+TELEGRAM_CHAT_ID=...          the chat the bot writes to and obeys (private chat, or a group of yours)
+TELEGRAM_USER_ID=...          optional: the only person obeyed in that chat (recommended in a group)
+CLAUDE_CODE_OAUTH_TOKEN=...   only with scoring: claude
+```
+
+`INSTALL.md` step 5 shows how to get each value. After changing this file, restart the bot
+(`sudo launchctl kickstart -k system/com.jobbot.telegram`, admin account). Messages the bot cannot
+deliver (no network, Telegram down) are kept and sent later.
+
+## Language of the messages
+
+The bot speaks English by default. Send it:
+
+```
+/lang fr      French
+/lang en      English
+/lang         shows the current language and the available ones
+```
+
+The choice is remembered and also applies to the command menu, the daily recap and, in Claude mode, the
+one-line reasons Claude writes. Both names of the four renamed commands always work (`/queue` = `/file`,
+`/show` = `/voir`, `/rejects` = `/rejets`, `/company` = `/firma`).
+
+To add a language, copy `locales/en.yaml` to `locales/<code>.yaml` (for example `de.yaml`), translate
+the texts on the right of each line, keep the `{placeholders}` as they are, and restart the bot:
+`/lang de` then works. A text missing from your file falls back to English.
 
 ## Commands
 
@@ -84,11 +166,97 @@ and documentation — is in English.
 | `private/` | Your identity and profile (gitignored) |
 | `documents/cv/jobbot/` | Your CV in blocks (gitignored); example in `examples/cv/` |
 
-The shipped configuration is a working example for IT delivery roles in Vienna, Bratislava and Budapest
-with thirteen portals: karriere.at, derStandard, Hays, Randstad and Michael Page Austria, Kariéra.sk,
-Profession.hu, UN Careers, UNIDO, OSCE, OPEC Fund, Jobgether and LinkedIn. For another market, build
-portals with the framework's `/add-portal` command, register them in `scripts/prefilter.py` (`PORTALS`)
-and set the others to `0` under `queries_per_run`.
+The shipped configuration is a working example for IT delivery roles in Vienna, Bratislava and
+Budapest. For another job or another country, change `criteria.md` and `regions.yaml`, turn off the
+portals you do not need and add your own (next two sections).
+
+## Portals and connectors included
+
+**Job portals** — one small command-line tool each, in `.agents/skills/<name>/` (its `SKILL.md` says
+what the site's `robots.txt` and terms allow). The key is the name used in `queries_per_run`
+(`config/schedule.yaml`) and in `/search <key>`.
+
+| Key | Site | Covers | How it is read |
+|---|---|---|---|
+| `karriere` | karriere.at | Austria | keyword search, per city |
+| `derstandard` | jobs.derstandard.at | Austria | keyword search, per city |
+| `hays` | hays.at | Austria (staffing agency) | one walk of the listing, filtered by region |
+| `randstad` | randstad.at | Austria (staffing agency) | IT listing of the enabled cities |
+| `michaelpage` | michaelpage.at | Austria (recruitment agency) | IT listing of Vienna |
+| `kariera` | kariera.zoznam.sk | Slovakia | IT listings of the enabled regions |
+| `profession` | profession.hu | Hungary | official RSS feed of the IT category |
+| `uncareers` | careers.un.org | United Nations, by duty station | one query per city |
+| `unido` | careers.unido.org | UNIDO | one query per city |
+| `osce` | vacancies.osce.org | OSCE | one walk of the board |
+| `opecfund` | careers.opecfund.org | OPEC Fund | one request |
+| `jobgether` | jobgether.com | remote jobs open to Europe | one query per English title |
+| `linkedin` | linkedin.com | any region, and remote | public listings, low volume, limited runs per day |
+
+Turn a portal off with `0` under `queries_per_run`. Several are specific to IT listings: read the
+portal's `SKILL.md` before pointing it at another field.
+
+**Career-page connectors** — for the companies of your list (`companies-seed.md`, `/discover`,
+`/accept`). JobBot detects which recruiting software a company's career page uses and, when a connector
+exists, reads its postings from the vendor's public feed. The key `companies` (`/search companies`)
+runs them.
+
+| Recruiting software | Status |
+|---|---|
+| Personio | connector (public XML feed of `<company>.jobs.personio.de`) |
+| Greenhouse | connector (public job-board API) |
+| Lever | connector (public postings API, including the EU instance) |
+| Workday, SAP SuccessFactors, SmartRecruiters, Recruitee, softgarden, onlyfy | detected and reported, **no connector**: no documented public feed, or `robots.txt` forbids it (reasons in `scripts/ats/vendors.py`) |
+
+Not included, on purpose: willhaben (its `robots.txt` forbids all automated access), AMS (no read API)
+and profesia.sk.
+
+## Adding a portal
+
+A portal has two parts: the command-line tool that reads the site, and its registration in JobBot.
+
+**1. The tool.** With Claude Code, start `claude` in the repository and run the framework's command:
+
+```
+/add-portal
+```
+
+It asks for the site, checks `robots.txt` and the terms first (and stops if automated access is
+forbidden), then writes `.agents/skills/<name>-search/` with a `search` and a `detail` command and tests
+that run without the network. Without Claude, copy an existing portal folder that reads a similar site
+(a keyword search: `karriere-search`; a plain listing: `randstad-search`; an RSS feed:
+`profession-search`) and adapt its `cli/src/` files. Check it by hand:
+
+```bash
+bun run .agents/skills/<name>-search/cli/src/cli.ts search --format table
+```
+
+**2. The registration.** JobBot must know the portal's name, which countries it covers and how to query
+it. These are the places, all short; the way an existing portal is registered is the model:
+
+| File | What to add |
+|---|---|
+| `jobbot/scripts/prefilter.py` | an entry in `PORTALS` (skill folder, domain, countries); a branch in `plan_queries` (which queries to run for the enabled regions) and one in `search_args` (the tool's arguments) |
+| `jobbot/scripts/common.py` | a default number of queries in `SCHEDULE_DEFAULTS["queries_per_run"]` |
+| `jobbot/config/schedule.yaml` | the same key under `queries_per_run` |
+| `jobbot/bot/logic.py` | the key in `PORTAL_NAMES`, so that `/search <key>` accepts it |
+| `jobbot/tests/` | a fixture in `fake_bun.py` and a case in `test_prefilter.py` |
+
+With Claude Code you can paste this instead of doing it by hand:
+
+```
+Read jobbot/SPEC.md §7 and how the portal "randstad" is registered in jobbot/scripts/prefilter.py,
+jobbot/scripts/common.py, jobbot/config/schedule.yaml, jobbot/bot/logic.py and jobbot/tests/.
+Register the portal .agents/skills/<name>-search the same way, with network-free tests. Plan first.
+```
+
+**3. The whitelist.** Approve the portal's domain, or JobBot skips it: add a line for it to
+`config/sites-seed.md` and run the import of `INSTALL.md` step 9 again, yourself.
+
+**4. Try it.** `JOBBOT_DRY_RUN=1 bash jobbot/scripts/run_scan.sh --site <key>` sends `[TEST]` alerts only.
+
+Adding a career-page connector for another recruiting software works the same way in
+`jobbot/scripts/ats/` (`vendors.py` for the detection, `connectors.py` for the feed), provided the
+vendor documents a public feed and its `robots.txt` allows it.
 
 ## Safety
 

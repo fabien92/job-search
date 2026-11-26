@@ -1,8 +1,16 @@
 > **This is a fork with one addition: [JobBot](jobbot/README.md).**
 > JobBot runs the search unattended on a Mac and talks to you on Telegram: it scans job portals and
 > career pages every few hours, filters and scores the postings, shows you the good ones one at a time
-> and builds your CV when you answer `/go`. It never applies for you. It works with a Claude
-> subscription (AI scoring) or without one (keyword scoring, free).
+> and builds your CV when you answer `/go`. It never applies for you.
+>
+> - **Free mode:** JobBot works [without any Claude subscription](jobbot/README.md#free-mode-without-a-claude-subscription)
+>   (keyword scoring, no AI, no account). With Claude Pro or Max it reads and scores each posting.
+> - **Telegram:** you create [your own bot](jobbot/README.md#telegram-your-own-bot); messages in
+>   [English or French](jobbot/README.md#language-of-the-messages) (`/lang`), and other languages can be added.
+> - **13 job portals and 3 career-page connectors** are [included](jobbot/README.md#portals-and-connectors-included)
+>   (Austria, Slovakia, Hungary, international organisations, remote), with a guide to
+>   [add your own](jobbot/README.md#adding-a-portal).
+>
 > **[What it does](jobbot/README.md)** · **[Install it step by step](jobbot/INSTALL.md)** ·
 > [Specification](jobbot/SPEC.md)
 >
