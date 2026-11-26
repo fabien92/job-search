@@ -1,0 +1,53 @@
+{
+ "jobs": [
+  {
+   "id": "6ae57d28d6c8b081a79c18c1",
+   "title": "Integrated Marketing Project Manager",
+   "company": "Think Jam",
+   "url": "https://jobgether.com/offer/6ae57d28d6c8b081a79c18c1-integrated-marketing-project-manager",
+   "location": "Anywhere",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Mid-level (2-5 years)",
+   "salaryRange": "60000-80000 USD",
+   "jobFunctions": [
+    "Marketing Project Manager"
+   ],
+   "postedAt": "2026-10-31T05:31:21.071Z"
+  },
+  {
+   "id": "6ae544e7d6c8b081a79ad77d",
+   "title": "Technical Project Manager- Low Voltage, CCTV and Access Control",
+   "company": "Support Tech",
+   "url": "https://jobgether.com/offer/6ae544e7d6c8b081a79ad77d-technical-project-manager--low-voltage-cctv-and-access-control",
+   "location": "Anywhere",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Junior (1-2 years)",
+   "jobFunctions": [
+    "Technical Project Manager"
+   ],
+   "postedAt": "2026-10-31T01:31:19.307Z"
+  },
+  {
+   "id": "6ae51ab6d6c8b081a79a1fb2",
+   "title": "Weekend Localization & Interpreting Project Manager",
+   "company": "Day Translations, Inc.",
+   "url": "https://jobgether.com/offer/6a518087ac00a71a5a873f2f-weekend-localization-interpreting-project-manager",
+   "location": "Anywhere",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Mid-level (2-5 years)",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-10-30T22:31:18.494Z"
+  }
+ ],
+ "pagination": {
+  "page": 2,
+  "limit": 25,
+  "hasMore": false
+ },
+ "docs": "/astroapi/ai/jobs/docs"
+}

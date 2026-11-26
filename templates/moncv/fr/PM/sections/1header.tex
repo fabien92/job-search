@@ -1,0 +1,71 @@
+% Identity comes from private/identity.tex when it exists (gitignored),
+% otherwise from the fictional templates/identity_example.tex.
+\IfFileExists{../../../../private/identity.tex}%
+  {\input{../../../../private/identity.tex}}%
+  {\input{../../../identity_example.tex}}
+
+\vspace*{-14mm}
+
+\newcommand{\cvicon}[1]{%
+  \raisebox{-0.15\height}{\includegraphics[width=3.8mm]{#1}}%
+}
+
+\newcommand{\contactitem}[2]{%
+  \makebox[7mm][l]{\cvicon{#1}}#2%
+}
+
+\noindent
+\begin{minipage}[t]{0.73\textwidth}
+
+{\fontsize{31pt}{34pt}\selectfont\bfseries\color[HTML]{1F1F1F} \cvname}
+
+\vspace{3mm}
+
+{\fontsize{16pt}{19pt}\selectfont\color{darkgray}
+\cvheadline
+}
+
+\vspace{7mm}
+
+\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
+
+\contactitem{../../assets/icons/mail.png}
+{\href{mailto:\cvemail}{\cvemail}}
+&
+\contactitem{../../assets/icons/phone.png}
+{\href{tel:\cvphonetel}{\cvphone}}
+\\[2.5mm]
+
+\contactitem{../../assets/icons/location.png}
+{\cvcityfr}
+&
+\contactitem{../../assets/icons/linkedin.png}
+{\href{\cvlinkedinurl}{\cvlinkedin}}
+\\[2.5mm]
+
+\contactitem{../../assets/icons/langue.png}
+{\cvlanguagesfr}
+&
+\ifx\cvbirthdate\empty\else\contactitem{../../assets/icons/calendar.png}{\cvbirthdate}\fi
+
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.23\textwidth}
+\vspace{11mm}
+\begin{flushright}
+\ifx\cvphotofr\empty\else
+\includegraphics[
+  width=3.25cm,
+  height=3.25cm,
+  keepaspectratio,
+  clip
+]{\cvphotofr}
+\fi
+\end{flushright}
+\end{minipage}
+
+\vspace{-2mm}

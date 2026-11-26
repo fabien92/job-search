@@ -1,0 +1,2 @@
+!cover_letters/cover.cls
+!cover_letters/OpenFonts/

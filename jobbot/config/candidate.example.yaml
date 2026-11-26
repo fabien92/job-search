@@ -1,0 +1,7 @@
+# Fictional identity, used when private/candidate.yaml does not exist.
+# Copy to private/candidate.yaml (gitignored) and fill in real values.
+name: Jane Doe
+email: jane@example.com
+phone: "+00 000 000"
+linkedin: https://linkedin.com/in/jane-doe-example
+city: Vienna, Austria

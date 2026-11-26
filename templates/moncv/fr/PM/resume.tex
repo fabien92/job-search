@@ -1,0 +1,48 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt, a4paper]{../../template/awesome-cv}
+
+%-------------------------------------------------------------------------------
+% CONFIGURATION
+%-------------------------------------------------------------------------------
+\geometry{left=1.3cm, top=0.8cm, right=1.3cm, bottom=1.4cm, footskip=0.4cm}
+
+\colorlet{awesome}{awesome-red}
+\setbool{acvSectionColorHighlight}{true}
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{afterpage}
+
+%-------------------------------------------------------------------------------
+% Real sections live in private/moncv/fr/PM/sections/ (gitignored); the tracked
+% sections/ hold a fictional example used when no private copy exists.
+\newcommand{\cvpart}[1]{\IfFileExists{../../../../private/moncv/fr/PM/sections/#1.tex}%
+  {\input{../../../../private/moncv/fr/PM/sections/#1.tex}}{\input{sections/#1.tex}}}
+
+\begin{document}
+
+% ==================== COULEURS ====================
+\definecolor{accent}{HTML}{0A66C2}
+
+% ==================== HEADER ====================
+\input{sections/1header.tex}
+
+\makecvfooter{}{}{}
+
+%-------------------------------------------------------------------------------
+% SECTIONS
+%-------------------------------------------------------------------------------
+\cvpart{2profile}
+\cvpart{2reussite}
+\cvpart{3experience}
+\cvpart{4education}
+\cvpart{5certifications}
+\cvpart{6technical_skills}
+\cvpart{7functional_skills}
+\cvpart{8languages}
+
+\end{document}

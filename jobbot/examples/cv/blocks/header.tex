@@ -1,0 +1,62 @@
+\vspace*{-14mm}
+
+% Contact icons come from Font Awesome (loaded by the class): no image file needed.
+\newcommand{\contactitem}[2]{%
+  \makebox[7mm][l]{\color{accent}#1}#2%
+}
+
+\noindent
+\begin{minipage}[t]{0.73\textwidth}
+
+{\fontsize{31pt}{34pt}\selectfont\bfseries\color[HTML]{1F1F1F} \cvname}
+
+\vspace{3mm}
+
+{\fontsize{16pt}{19pt}\selectfont\color{darkgray}
+\cvHeadline
+}
+
+\vspace{7mm}
+
+\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
+
+\contactitem{\faEnvelope}
+{\href{mailto:\cvemail}{\cvemail}}
+&
+\contactitem{\faPhone}
+{\href{tel:\cvphonetel}{\cvphoneplain}}
+\\[2.5mm]
+
+\contactitem{\faLocationDot}
+{\cvcity}
+&
+\contactitem{\faLinkedin}
+{\href{\cvlinkedinurl}{\cvlinkedin}}
+\\[2.5mm]
+
+\contactitem{\faLanguage}
+{\cvlanguages}
+
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\end{minipage}
+\ifcvphoto
+\ifx\cvPhotoFile\empty\else
+\hfill
+\begin{minipage}[t]{0.23\textwidth}
+\vspace{11mm}
+\begin{flushright}
+\includegraphics[
+  width=3.25cm,
+  height=3.25cm,
+  keepaspectratio,
+  clip
+]{\cvPhotoFile}
+\end{flushright}
+\end{minipage}
+\fi
+\fi
+
+\vspace{-2mm}

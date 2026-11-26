@@ -1,4 +1,5 @@
-%% Example CV - [YOUR_NAME]
+%% Example CV - identity from private/identity.tex (gitignored) or templates/identity_example.tex
+%% The real master CV lives in private/cv/main_example.tex.
 %% Comprehensive overview of all competencies, experience, and achievements.
 %% Use as a master reference when tailoring role-specific CVs.
 %%
@@ -7,6 +8,7 @@
 %% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
 
 \documentclass[11pt,a4paper,sans]{moderncv}
+\IfFileExists{../private/identity.tex}{\input{../private/identity.tex}}{\input{../templates/identity_example.tex}}
 \moderncvstyle{banking}
 \moderncvcolor{blue}
 
@@ -40,7 +42,7 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={\cvfirstname\space\cvlastname\space - CV},
     % Keep pdfpagemode=UseNone: this block runs after moderncv's own
     % \AtEndPreamble (moderncv.cls sets pdfpagemode there), so a FullScreen
     % value here would win and open every CV in fullscreen presentation mode.
@@ -50,13 +52,13 @@
 \usepackage{import}
 
 % personal data
-\name{[First]}{[Last]}
+\name{\cvfirstname}{\cvlastname}
 % If you have no address to list, DELETE this whole line. \address{}{}{} fails
 % with "There's no line here to end" on every moderncv version.
-\address{[Your Address, City, Country]}{}{}
-\phone[mobile]{[+XX XXXXXXXXXX]}
-\email{[your.email@example.com]}
-\extrainfo{\href{[https://linkedin.com/in/your-profile]}{LinkedIn}, \href{[https://github.com/your-username]}{GitHub}}
+\address{\cvcity}{}{}
+\phone[mobile]{\cvphoneplain}
+\email{\cvemail}
+\extrainfo{\href{\cvlinkedinurl}{\cvlinkedin}}
 
 \begin{document}
 

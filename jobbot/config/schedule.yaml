@@ -1,0 +1,74 @@
+# JobBot schedule and limits. Read at every run; after changing a time or a frequency marked
+# (launchd), regenerate and reinstall the services (jobbot/launchd/INSTALL-LAUNCHD.md).
+timezone: Europe/Vienna      # used for dates in messages and logs; keep it equal to the Mac's time zone
+
+# How postings are scored:
+#   claude = a headless Claude Code run reads each posting and scores it against your profile
+#            (needs a Claude subscription and CLAUDE_CODE_OAUTH_TOKEN in secrets.env);
+#   rules  = no AI at all: a keyword score computed from criteria.md (free, no Claude account).
+#            /go then sends the chosen CV variant unchanged; /discover and /spont are unavailable.
+scoring: claude
+default_variant: delivery    # CV variant used when the scoring did not choose one (always, in rules mode)
+
+scan_every_hours: 4          # all sites (launchd)
+linkedin_runs_per_day: 3     # LinkedIn is limited
+freshness_hours: 48
+
+alert_threshold: 60          # minimum score (0-100) to be alerted
+max_scored_per_run: 40       # cap on postings scored per run
+max_budget_usd_per_run: 2.0  # --max-budget-usd cap (client-side estimate)
+scan_model: sonnet           # scoring model (claude --model)
+go_model: sonnet             # /go model when the CV is adapted (cv_overrides.tex only)
+max_budget_usd_per_go: 1.0   # --max-budget-usd cap of one /go
+queries_per_run:             # queries per run and per portal (titles of criteria.md, in order); 0 = portal off
+  karriere: 40               # DE + EN + keywords, enabled AT regions
+  linkedin: 8                # EN only; alternates region / remote when remote_worldwide
+  derstandard: 12            # DE + EN + keywords, AT regions; 1 page (20 postings) per query
+  uncareers: 3               # UN (careers.un.org): 1 query per enabled city, no keyword
+  unido: 3                   # UNIDO (careers.unido.org): same; about twenty postings in all
+  osce: 1                    # OSCE (vacancies.osce.org): 1 walk of the whole site (~5 pages) for every city
+  opecfund: 1                # OPEC Fund (careers.opecfund.org): 1 query (fewer than 10 postings, all in Vienna)
+  hays: 1                    # Hays Austria (www.hays.at): 1 walk of Austria (~4 pages, 10 s apart), filtered on AT regions
+  jobgether: 21              # Jobgether (agent API, remote only): 1 query per EN title when remote_worldwide
+  randstad: 1                # Randstad Austria (www.randstad.at): 1 walk of the enabled city lists, no keyword
+  profession: 1              # Profession.hu (Hungary): 1 read of the IT RSS feed (20 postings), filtered on enabled HU cities
+  kariera: 1                 # Kariéra.sk (Slovakia): 1 walk of the 2 IT lists of the enabled SK regions
+  michaelpage: 1             # Michael Page Austria (www.michaelpage.at): 1 walk of the Vienna IT list (2 pages)
+
+daily_recap: "08:00"         # (launchd)
+weekly_report: { day: sunday, time: "18:00" }   # (launchd)
+backup: "02:30"              # (launchd)
+pending_reminder_hours: 24
+zero_results_alert_days: 3
+min_free_disk_gb: 2          # pre-flight check: minimum free disk space (GB)
+token_warning_days: 30       # alert when the Claude token expires in fewer than N days
+
+# Companies and spontaneous applications (SPEC §10)
+companies_every_hours: 24    # career pages (Personio, Greenhouse, Lever connectors) at most once a day
+osce_every_hours: 24         # OSCE site walked at most once a day (forced by /search osce)
+companies_per_run: 30        # companies queried per run (least recently seen first)
+companies_detect_per_run: 10 # online detections of the recruiting software per run
+companies_max_age_days: 30   # maximum age of a career-page posting (de-duplication prevents repeats)
+discover_model: sonnet       # /discover <region>
+max_budget_usd_per_discover: 1.5
+spont_model: sonnet          # /spont <company>
+max_budget_usd_per_spont: 1.0
+spont_list: "20:00"          # daily list of companies for a spontaneous application (launchd com.jobbot.spont)
+spont_list_size: 5
+spont_list_repeat_days: 14   # a listed company is not listed again before N days
+
+# Follow-ups (SPEC §8): same values as the follow-up branch of /outcome (10 days, at most 2 follow-ups)
+followup_days: 10            # Telegram reminder after N days without news (applications confirmed by /sent)
+followup_max: 2              # beyond that: one last notice, then no more reminders (close with /outcome)
+
+# Housekeeping of the "already seen" ledger (0 disables)
+seen_retention_days: 365             # postings not seen for N days are forgotten (alerted ones are kept)
+circumstantial_retention_days: 14    # a posting rejected only for its region or age is looked at again after N days
+
+# Reposted postings: same company, same city, retouched title (SPEC §4)
+republish:
+  enabled: true
+  window_days: 30            # compared with the same company's postings seen over N days
+  min_common_words: 2        # minimum words in common (small words such as "und", "for" ignored)
+  min_overlap: 0.8           # share of the shorter title's words found in the other
+  min_similarity: 0.75       # title similarity, words sorted (0 to 1)

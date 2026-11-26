@@ -1,0 +1,59 @@
+%-------------------------------------------------------------------------------
+% DEFAULT CONTENT MACROS — the only things a variant or cv_overrides.tex may redefine
+% (with \renewcommand). Fictional example content.
+%-------------------------------------------------------------------------------
+
+% ---- Header -------------------------------------------------------------------
+% Photo on/off (content choice; the header layout is unchanged): \cvphotofalse in a variant.
+% The photo is shown only when \cvPhotoFile is not empty: put your photo in this folder
+% (*.jpg is gitignored) and set e.g. \newcommand{\cvPhotoFile}{photo.jpg}.
+\newif\ifcvphoto
+\cvphototrue
+\newcommand{\cvPhotoFile}{}
+\newcommand{\cvHeadline}{Technical Project Manager \textbullet\ IT Delivery Manager}
+
+% ---- Profile (one paragraph, 4 lines at most) ----------------------------------
+\newcommand{\cvProfileText}{IT Delivery Manager with 8+ years of experience delivering and running business-critical applications. Track record in release planning, coordination of external development teams, incident management and service reporting. Hybrid profile bridging business needs, production constraints and technical decisions. Fluent in English (C1); German (B2).}
+
+% ---- Key achievements (exactly three, "\textbf{Title} --- text") --------------
+\newcommand{\cvAchievementOne}{\textbf{Release Process Industrialisation} --- Introduced an automated build and release pipeline for a customer-facing application, cutting the release lead time from two weeks to two days with no post-release incident over twelve months.}
+\newcommand{\cvAchievementTwo}{\textbf{Platform Migration} --- Planned and delivered the migration of a legacy application to a new infrastructure (servers, database, batch scheduling) with no service interruption and no data loss.}
+\newcommand{\cvAchievementThree}{\textbf{Support Model Redesign} --- Set up a follow-the-sun Level 1 support with documented procedures and escalation rules, reducing the on-call load of the core team while improving resolution times.}
+
+% ---- Current role: order of the three bullet groups ----------------------------
+% \expMgmt, \expTech, \expProj are defined in blocks/experience.tex.
+\newcommand{\expCurrentBlocks}{\expMgmt\expTech\expProj}
+
+% ---- Technical skills: 3 x 3 grid, cells A..I in reading order -----------------
+% \skillcell{Title}{comma-separated skills}
+\newcommand{\tsA}{\skillcell{Systems \& Infrastructure}{Linux, Windows Server}}
+\newcommand{\tsB}{\skillcell{Databases}{PostgreSQL, Oracle, SQL Server}}
+\newcommand{\tsC}{\skillcell{DevOps \& Automation}{Git, Jenkins, Ansible, Docker}}
+\newcommand{\tsD}{\skillcell{Middleware \& Integration}{REST API, Message queues}}
+\newcommand{\tsE}{\skillcell{IT Production \& Monitoring}{ServiceNow, Dynatrace, ITIL}}
+\newcommand{\tsF}{\skillcell{Project \& Quality Tools}{Jira, Confluence}}
+\newcommand{\tsG}{\skillcell{Languages \& Scripting}{Python, Bash, PowerShell}}
+\newcommand{\tsH}{\skillcell{AI}{Claude Code}}
+\newcommand{\tsI}{\skillcell{Methodologies \& Frameworks}{Scrum, Agile, ITIL, PRINCE2}}
+
+% ---- Functional skills: 2 x 2 grid, cells A..D ---------------------------------
+% \funcell{Title}{comma-separated skills}
+\newcommand{\fsA}{\funcell{Project \& Delivery}{Sprint planning, Backlog management, Release governance, SLA/KPI reporting}}
+\newcommand{\fsB}{\funcell{Architecture \& Infrastructure}{Server sizing, Migration planning, CI/CD design, High availability}}
+\newcommand{\fsC}{\funcell{Vendor \& Governance}{Vendor management, Contract follow-up, Offshore coordination, Recruitment}}
+\newcommand{\fsD}{\funcell{IT Production \& Incident}{Incident management, On-call, Operational monitoring, Crisis communication}}
+
+% ---- Cell helpers (layout of the template — do not change) ---------------------
+\newcommand{\skillcell}[2]{%
+\begin{minipage}[t]{\linewidth}
+\textbf{#1}
+
+#2
+\end{minipage}}
+\newcommand{\funcell}[2]{%
+\begin{minipage}[t]{0.47\textwidth}
+  \raggedright
+  \textbf{#1}
+
+  #2
+\end{minipage}}

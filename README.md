@@ -1,3 +1,14 @@
+> **This is a fork with one addition: [JobBot](jobbot/README.md).**
+> JobBot runs the search unattended on a Mac and talks to you on Telegram: it scans job portals and
+> career pages every few hours, filters and scores the postings, shows you the good ones one at a time
+> and builds your CV when you answer `/go`. It never applies for you. It works with a Claude
+> subscription (AI scoring) or without one (keyword scoring, free).
+> **[What it does](jobbot/README.md)** · **[Install it step by step](jobbot/INSTALL.md)** ·
+> [Specification](jobbot/SPEC.md)
+>
+> Everything below is the original [AI Job Search](https://github.com/ai-job-search-dev/ai-job-search)
+> framework by Mads Lorentzen and its contributors, unchanged and fully usable in this fork.
+
 <p align="center">
   <img src="assets/readme/hero.svg" alt="AI Job Search. Pip the courier bird carries an application along a flight path to its destination. The job search that runs on your machine." width="100%">
 </p>

@@ -57,6 +57,8 @@ When the user provides a job posting (URL or text), follow this workflow:
 
 ## Reference Files
 
+**Private overrides:** for each file below, read (and write back to) `private/skills/job-application-assistant/<file>` when it exists - it holds the candidate's real data and is gitignored. The tracked file is then only a template. Likewise the real master CV is `private/cv/main_example.tex` when it exists.
+
 | File | Purpose |
 |------|---------|
 | `01-candidate-profile.md` | Education, experience, skills, publications, awards |

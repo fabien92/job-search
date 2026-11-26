@@ -1,0 +1,143 @@
+{
+ "jobs": [
+  {
+   "id": "6b0648761870ab7f4cc39586",
+   "title": "Busi​ness Analyst & Project Manager",
+   "company": "Gegidze",
+   "url": "https://jobgether.com/offer/6b0648761870ab7f4cc39586-business-analyst-project-manager",
+   "location": "Europe",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Mid-level (2-5 years)",
+   "jobFunctions": [
+    "Project Analyst"
+   ],
+   "postedAt": "2026-11-25T02:31:18.620Z"
+  },
+  {
+   "id": "6b0610371870ab7f4cc2a363",
+   "title": "Senior Project Manager",
+   "company": "Holafly",
+   "url": "https://jobgether.com/offer/6b0610371870ab7f4cc2a363-senior-project-manager",
+   "location": "EMEA",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Senior (5-10 years)",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-11-24T22:31:19.356Z"
+  },
+  {
+   "id": "6b01c77f1870ab7f4cb0cecd",
+   "title": "Project Manager EMEA, Production",
+   "company": "Lilt",
+   "url": "https://jobgether.com/offer/6b01c77f1870ab7f4cb0cecd-project-manager-emea-production",
+   "location": "EMEA",
+   "remote": "Full Remote",
+   "contractType": "Fixed term",
+   "experience": "Mid-level (2-5 years)",
+   "salaryRange": "28800-34560 USD",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-11-21T16:31:59.268Z"
+  },
+  {
+   "id": "6b0092318acd9c1f9b34cd78",
+   "title": "Strategy & Transformation Consultant / Project Manager (m/w/d)",
+   "company": "FALKRAFT",
+   "url": "https://jobgether.com/offer/6b0092318acd9c1f9b34cd78-strategy-transformation-consultant-project-manager-m-w-d",
+   "location": "Anywhere",
+   "remote": "Full Remote",
+   "contractType": "Freelance",
+   "experience": "Mid-level (2-5 years)",
+   "jobFunctions": [
+    "Strategy Consultant"
+   ],
+   "postedAt": "2026-11-20T18:32:17.238Z"
+  },
+  {
+   "id": "6b0092138acd9c1f9b34c5c5",
+   "title": "Clinical Project Manager (can be based anywhere in the Europe)",
+   "company": "PrimeVigilance",
+   "url": "https://jobgether.com/offer/6b0092138acd9c1f9b34c5c5-clinical-project-manager-can-be-based-anywhere-in-the-europe",
+   "location": "Europe",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Senior (5-10 years)",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-11-20T18:31:47.655Z"
+  },
+  {
+   "id": "6afede078acd9c1f9b2bda3f",
+   "title": "Resilient Watersheds Project Manager, Europe (m/f/d)",
+   "company": "The Nature Conservancy",
+   "url": "https://jobgether.com/offer/6a9b1c540875ca77c4ca6259-resilient-watersheds-project-manager-europe-m-f-d",
+   "location": "Europe",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Mid-level (2-5 years)",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-11-19T11:31:19.761Z"
+  },
+  {
+   "id": "6afd1c168acd9c1f9b232b35",
+   "title": "Senior Project Manager - Dynamics 365 Finance & Supply Chain Management",
+   "company": "Quisitive",
+   "url": "https://jobgether.com/offer/6afd1c168acd9c1f9b232b35-senior-project-manager---dynamics-365-finance-supply-chain-management",
+   "location": "Anywhere",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Senior (5-10 years)",
+   "jobFunctions": [
+    "Supply Chain Manager"
+   ],
+   "postedAt": "2026-11-18T03:31:34.812Z"
+  },
+  {
+   "id": "6ac96b4949c73d7b9964fdc6",
+   "title": "Senior Project Manager, AD&C – Luxury Brands",
+   "company": "Hilton",
+   "url": "https://jobgether.com/offer/6ac96b4949c73d7b9964fdc6-senior-project-manager-ad-c---luxury-brands",
+   "location": "Anywhere, United States",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Senior (5-10 years)",
+   "salaryRange": "90000-130000 USD",
+   "jobFunctions": [
+    "Project Manager"
+   ],
+   "postedAt": "2026-10-09T22:31:37.555Z"
+  },
+  {
+   "id": "6a3ed3732da8cde35c76c5b1",
+   "title": "Project Manager - IT Transfer Pricing (m/f/d) at Transparent Hiring",
+   "company": "Transparent Hiring",
+   "url": "https://jobgether.com/offer/6a3ed3732da8cde35c76c5b1-project-manager---it-transfer-pricing-m-f-d-at-transparent-hiring",
+   "location": "Austria, Delaware (USA)",
+   "remote": "Full Remote",
+   "contractType": "Full time",
+   "experience": "Mid-level (2-5 years)",
+   "jobFunctions": [
+    "Transfer Pricing Specialist"
+   ],
+   "postedAt": "2026-06-26T19:30:59.501Z"
+  },
+  {
+   "id": "not-an-id",
+   "title": "Malformed row",
+   "url": "https://evil.example/offer/x"
+  }
+ ],
+ "pagination": {
+  "page": 1,
+  "limit": 25,
+  "hasMore": true
+ },
+ "docs": "/astroapi/ai/jobs/docs"
+}

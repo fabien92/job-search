@@ -1,0 +1,150 @@
+{
+ "status": 1,
+ "message": "Success.",
+ "data": {
+  "list": [
+   {
+    "_id": "6b07182edca68dd4b374da4d",
+    "jobId": 289094,
+    "language": "EN",
+    "categoryCode": "GS",
+    "jobTitle": "INFORMATION SYSTEMS ASSISTANT",
+    "postingTitle": "INFORMATION​ SYSTEMS ASSISTANT, G5‮",
+    "jobCodeTitle": "INFORMATION SYSTEMS ASSISTANT",
+    "jobDescription": "<div class='jobPostingDetail'>(trimmed in fixture)</div>",
+    "jobFamilyCode": "IST",
+    "jobLevel": "G-5",
+    "dutyStation": [
+     {
+      "code": "0300",
+      "description": "VIENNA",
+      "_id": "x"
+     }
+    ],
+    "recruitmentType": "J",
+    "startDate": "2026-11-25T05:00:00.000Z",
+    "endDate": "2026-12-02T04:59:59.000Z",
+    "jn": {
+     "code": "ITECNET",
+     "name": "Information and Telecommunication Technology"
+    },
+    "jf": {
+     "Code": "IST",
+     "Name": "Information Management Systems and Technology"
+    },
+    "jc": {
+     "code": "GS",
+     "name": "General Service and Related Categories"
+    },
+    "jl": {
+     "code": "370",
+     "name": "G-5"
+    },
+    "recrttype": {
+     "code": "T",
+     "name": "Temporary Opportunities"
+    },
+    "dept": {
+     "code": "61441273",
+     "name": "United Nations Interim Security Force for Abyei- created under GA resolution 1990 (2011)"
+    },
+    "totalCount": 14
+   },
+   {
+    "_id": "6b04c978dca68db96357b348",
+    "jobId": 288522,
+    "language": "EN",
+    "categoryCode": "INT",
+    "jobTitle": "Intern - Data Science, Information Integrity Unit",
+    "postingTitle": "Intern - Data Science, Information Integrity Unit",
+    "jobCodeTitle": "",
+    "jobDescription": "<div class='jobPostingDetail'>(trimmed in fixture)</div>",
+    "jobFamilyCode": "IST",
+    "jobLevel": "I-1",
+    "dutyStation": [
+     {
+      "code": "4560",
+      "description": "NEW YORK",
+      "_id": "6b07182d78ca538c599a4e01"
+     }
+    ],
+    "recruitmentType": "V",
+    "startDate": "2026-11-23T05:00:00.000Z",
+    "endDate": "2026-12-01T04:59:59.000Z",
+    "jf": {
+     "Code": "IST",
+     "Name": "Information Management Systems and Technology"
+    },
+    "jc": {
+     "code": "INT",
+     "name": "Affiliate Personnel – Internships"
+    },
+    "jl": {
+     "code": "1101",
+     "name": "I-1"
+    },
+    "recrttype": {
+     "code": "N",
+     "name": "Intern"
+    },
+    "dept": {
+     "code": "88888895",
+     "name": "Department of Peace Operations"
+    },
+    "totalCount": 14
+   },
+   {
+    "_id": "6b051ddfdca68d50f4522b13",
+    "jobId": 280754,
+    "language": "EN",
+    "categoryCode": "CON",
+    "jobTitle": "ICT Development Individual Contractor",
+    "postingTitle": "ICT Development Individual Contractor",
+    "jobCodeTitle": "",
+    "jobDescription": "<div class='jobPostingDetail'>(trimmed in fixture)</div>",
+    "jobFamilyCode": "IST",
+    "jobLevel": "CON",
+    "dutyStation": [
+     {
+      "code": "4200",
+      "description": "BANGKOK",
+      "_id": "6b0718262d78db681e5df65e"
+     }
+    ],
+    "recruitmentType": "H",
+    "startDate": "2026-11-23T05:00:00.000Z",
+    "endDate": "2026-12-01T04:59:59.000Z",
+    "jf": {
+     "Code": "IST",
+     "Name": "Information Management Systems and Technology"
+    },
+    "jc": {
+     "code": "CON",
+     "name": "Affiliate Personnel – Consultants/Individual Contractors"
+    },
+    "jl": {
+     "code": "CON",
+     "name": "CON"
+    },
+    "recrttype": {
+     "code": "I",
+     "name": "Individual Contractor"
+    },
+    "dept": {
+     "code": "10801080",
+     "name": "Economic and Social Commission for Asia and the Pacific"
+    },
+    "totalCount": 14
+   },
+   null,
+   {
+    "jobId": "not-a-number",
+    "postingTitle": "Broken"
+   },
+   {
+    "postingTitle": "No id"
+   }
+  ],
+  "count": 14
+ }
+}

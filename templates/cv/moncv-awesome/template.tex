@@ -1,0 +1,390 @@
+%!TEX TS-program = lualatex
+%!TEX encoding = UTF-8 Unicode
+%
+% moncv-awesome — CV template (awesome-cv v1.6.1 class, customised header and sections).
+% Single-file version of templates/moncv/en/PM (sections inlined) for /apply.
+%
+% \tpl = path from the directory you compile in to this template folder.
+%   cv/main_<company>_<role>.tex  ->  \def\tpl{../templates/cv/moncv-awesome}
+%   compiling inside this folder  ->  \def\tpl{.}
+\def\tpl{../templates/cv/moncv-awesome}
+
+\documentclass[11pt, a4paper]{\tpl/awesome-cv}
+
+%-------------------------------------------------------------------------------
+% CONFIGURATION
+%-------------------------------------------------------------------------------
+\geometry{left=1.3cm, top=0.8cm, right=1.3cm, bottom=1.4cm, footskip=0.4cm}
+
+\colorlet{awesome}{awesome-red}
+\setbool{acvSectionColorHighlight}{true}
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{afterpage}
+
+%-------------------------------------------------------------------------------
+\begin{document}
+
+% ==================== COULEURS ====================
+\definecolor{accent}{HTML}{0A66C2}
+
+% ==================== HEADER ====================
+\vspace*{-14mm}
+
+\newcommand{\cvicon}[1]{%
+  \raisebox{-0.15\height}{\includegraphics[width=3.8mm]{#1}}%
+}
+
+\newcommand{\contactitem}[2]{%
+  \makebox[7mm][l]{\cvicon{#1}}#2%
+}
+
+\noindent
+\begin{minipage}[t]{0.73\textwidth}
+
+{\fontsize{31pt}{34pt}\selectfont\bfseries\color[HTML]{1F1F1F} [YOUR_NAME]}
+
+\vspace{3mm}
+
+{\fontsize{16pt}{19pt}\selectfont\color{darkgray}
+[YOUR_HEADLINE_1] \textbullet\ [YOUR_HEADLINE_2] \textbullet\ [YOUR_HEADLINE_3]
+}
+
+\vspace{7mm}
+
+\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
+
+\contactitem{\tpl/icons/mail.png}
+{\href{mailto:[YOUR_EMAIL]}{[YOUR_EMAIL]}}
+&
+\contactitem{\tpl/icons/phone.png}
+{\href{tel:[YOUR_PHONE_DIGITS]}{[YOUR_PHONE]}}
+\\[2.5mm]
+
+\contactitem{\tpl/icons/location.png}
+{[YOUR_LOCATION]}
+&
+\contactitem{\tpl/icons/linkedin.png}
+{\href{https://[YOUR_LINKEDIN_URL]}{[YOUR_LINKEDIN_URL]}}
+\\[2.5mm]
+
+\contactitem{\tpl/icons/langue.png}
+{[LANGUAGE_1] \textbullet\ [LANGUAGE_2 LEVEL] \textbullet\ [LANGUAGE_3 LEVEL]}
+
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.23\textwidth}
+\vspace{11mm}
+\begin{flushright}
+\includegraphics[
+  width=3.25cm,
+  height=3.25cm,
+  keepaspectratio,
+  clip
+]{[YOUR_PHOTO_PATH]}
+\end{flushright}
+\end{minipage}
+
+\vspace{-2mm}
+
+\makecvfooter{}{}{}
+
+%-------------------------------------------------------------------------------
+% PROFILE
+%-------------------------------------------------------------------------------
+\cvsection{Profile}
+
+\cvparagraph{
+[PROFILE_PARAGRAPH: 4-6 sentences — role, years of experience, core strengths, languages, location / mobility, work authorisation]
+}
+
+\vspace{-2mm}
+
+%-------------------------------------------------------------------------------
+% KEY ACHIEVEMENTS
+%-------------------------------------------------------------------------------
+\cvsection{Key Achievements}
+
+\begin{itemize}
+
+\item \textbf{[ACHIEVEMENT_1_TITLE]} --- [ACHIEVEMENT_1_DESCRIPTION with measurable result]
+
+\item \textbf{[ACHIEVEMENT_2_TITLE]} --- [ACHIEVEMENT_2_DESCRIPTION with measurable result]
+
+\item \textbf{[ACHIEVEMENT_3_TITLE]} --- [ACHIEVEMENT_3_DESCRIPTION with measurable result]
+
+\end{itemize}
+
+%-------------------------------------------------------------------------------
+% PROFESSIONAL EXPERIENCE
+%-------------------------------------------------------------------------------
+\cvsection{Professional Experience}
+
+\begin{cvparagraph}
+
+\textbf{[EMPLOYER_1]} \hfill [MM/YYYY] -- Present | [COUNTRY]
+
+\vspace{2mm}
+
+{\large \textbf{[JOB_TITLE_1]}} \hfill [MM/YYYY] -- Present
+
+\vspace{1mm}
+
+Environment: [TEAM / DOMAIN / CONTEXT OF THE ROLE]
+
+\textbf{\uline{[SUBSECTION_LABEL_1]}}
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+    \item [BULLET]
+    \item [BULLET]
+    \item [BULLET]
+\end{itemize}
+
+\textbf{\uline{[SUBSECTION_LABEL_2]}}
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+    \item [BULLET]
+    \item [BULLET]
+\end{itemize}
+
+\vspace{1mm}
+
+{\large \textbf{[JOB_TITLE_2 (same employer)]}} \hfill [MM/YYYY] -- [MM/YYYY]
+
+\vspace{1mm}
+
+\textbf{\uline{[SUBSECTION_LABEL]}}
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+    \item [BULLET]
+    \item [BULLET]
+\end{itemize}
+
+\vspace{1mm}
+
+\end{cvparagraph}
+
+% Manual page break: page 1 = header, profile, achievements, current employer.
+\newpage
+\vspace*{5mm}
+
+\begin{cvparagraph}
+
+{\large \textbf{[JOB_TITLE_3], [EMPLOYER_2]}} \hfill [MM/YYYY] -- [MM/YYYY]
+
+\vspace{1mm}
+
+\textbf{\uline{[SUBSECTION_LABEL]}}
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+    \item [BULLET]
+    \item [BULLET]
+\end{itemize}
+
+\vspace{2mm}
+
+{\large \textbf{[JOB_TITLE_4], [EMPLOYER_3]}} \hfill [MM/YYYY] -- [MM/YYYY]
+
+\vspace{1mm}
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+    \item [BULLET]
+\end{itemize}
+\end{cvparagraph}
+
+\vspace{-2mm}
+
+%-------------------------------------------------------------------------------
+% EDUCATION
+%-------------------------------------------------------------------------------
+\cvsection{Education}
+
+\textbf{[DEGREE]}, \textit{[SCHOOL]}
+{\tiny\href{https://[SCHOOL_URL]}{\faLink}}
+\hfill
+[MM/YYYY] -- [MM/YYYY]
+
+\vspace{-2mm}
+
+\textit{[EDUCATION_NOTE, e.g. internships abroad]}
+
+\vspace{-2mm}
+
+%-------------------------------------------------------------------------------
+% ADDITIONAL TRAINING / CERTIFICATIONS
+%-------------------------------------------------------------------------------
+\cvsection{Additional Training}
+
+\noindent
+\makebox[\textwidth]{%
+\textbf{[CERTIFICATION_1]}, \textit{[ISSUER - CITY]}
+\hfill
+[MM/YYYY]
+}
+
+\vspace{-2mm}
+
+\noindent
+\makebox[\textwidth]{%
+\textbf{[CERTIFICATION_2]}, \textit{[ISSUER - CITY]}
+\hfill
+[MM/YYYY]
+}
+
+%-------------------------------------------------------------------------------
+% TECHNICAL SKILLS (3 x 3 grid)
+%-------------------------------------------------------------------------------
+\vspace{-4mm}
+
+\cvsection{Technical Skills}
+
+\begin{tabularx}{\textwidth}{@{}X X X@{}}
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_1]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_2]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_3]}
+
+[SKILLS]
+\end{minipage}
+
+\\[10mm]
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_4]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_5]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_6]}
+
+[SKILLS]
+\end{minipage}
+
+\\[10mm]
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_7]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_8]}
+
+[SKILLS]
+\end{minipage}
+
+&
+
+\begin{minipage}[t]{\linewidth}
+\textbf{[SKILL_GROUP_9]}
+
+[SKILLS]
+\end{minipage}
+
+\end{tabularx}
+
+\vspace{-2mm}
+
+%-------------------------------------------------------------------------------
+% FUNCTIONAL SKILLS (2 x 2 grid)
+%-------------------------------------------------------------------------------
+\cvsection{Functional Skills}
+
+\begin{minipage}[t]{0.47\textwidth}
+  \raggedright
+  \textbf{[FUNCTIONAL_GROUP_1]}
+
+  [SKILLS]
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+  \raggedright
+  \textbf{[FUNCTIONAL_GROUP_2]}
+
+  [SKILLS]
+\end{minipage}
+
+\vspace{4mm}
+
+\begin{minipage}[t]{0.47\textwidth}
+  \raggedright
+  \textbf{[FUNCTIONAL_GROUP_3]}
+
+  [SKILLS]
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}
+  \raggedright
+  \textbf{[FUNCTIONAL_GROUP_4]}
+
+  [SKILLS]
+\end{minipage}
+
+\vspace{-2mm}
+
+%-------------------------------------------------------------------------------
+% LANGUAGES
+%-------------------------------------------------------------------------------
+\cvsection{Languages}
+
+\begin{tabularx}{\textwidth}{
+>{\raggedright\arraybackslash}X
+>{\raggedright\arraybackslash}X
+>{\raggedright\arraybackslash}X
+}
+
+\textbf{[LANGUAGE_1]} &
+\textbf{[LANGUAGE_2]} &
+\textbf{[LANGUAGE_3]} \\
+
+[LEVEL_1] &
+[LEVEL_2] \newline
+([DETAIL]) &
+[LEVEL_3], [CERTIFICATE]\\
+
+\end{tabularx}
+
+\vspace{-2mm}
+
+\end{document}

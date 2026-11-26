@@ -1,0 +1,6 @@
+python-telegram-bot==22.*
+PyYAML==6.*
+# CV text-layer check (build_cv_variants.check_text): without it the e-mail / phone check is skipped.
+pypdf==7.1.1
+# CA bundle for the Telegram HTTPS calls (telegram_send.py): a python.org Python has no system CA store.
+certifi==2026.11.20

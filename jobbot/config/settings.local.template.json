@@ -1,0 +1,39 @@
+{
+  "_comment": "Partie fixe de .claude/settings.local.json. Le reste (WebFetch(domain:…), sandbox.network.allowedDomains) est généré depuis sites.yaml par jobbot/scripts/gen_settings.py. Ne pas éditer settings.local.json à la main : il est réécrit après chaque /allow ou /deny. Chaque entrée de protectedPaths produit une règle deny Edit(/<chemin>) et une entrée sandbox.filesystem.denyWrite absolue. Edit couvre aussi les outils Write et NotebookEdit et les redirections Bash (doc permissions : « Edit rules apply to all built-in tools that edit files ») ; une règle Write(<chemin>) serait acceptée mais ne bloquerait rien.",
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Read(~/Library/Caches/jobbot/**)",
+      "Edit(/jobbot/state/runs/*-scores.json)"
+    ],
+    "deny": [
+      "Edit(/jobbot/config/sites.yaml)",
+      "Edit(/jobbot/config/sites-seed.md)",
+      "Edit(/jobbot/config/settings.local.template.json)",
+      "Edit(/jobbot/scripts/sites.py)",
+      "Edit(/jobbot/scripts/import_seed.py)",
+      "Edit(/jobbot/scripts/gen_settings.py)",
+      "Edit(/jobbot/state/scan-settings.json)",
+      "Edit(/.claude/settings.local.json)",
+      "Edit(/.claude/settings.json)",
+      "Edit(/.claude/settings*.json)",
+      "Bash(*import_seed*)",
+      "Bash(*gen_settings*)",
+      "Bash(*sites.yaml*)",
+      "Bash(*settings.local*)",
+      "Bash(*scan-settings*)"
+    ]
+  },
+  "protectedPaths": [
+    "jobbot/config/sites.yaml",
+    "jobbot/config/sites-seed.md",
+    "jobbot/config/settings.local.template.json",
+    "jobbot/scripts/sites.py",
+    "jobbot/scripts/import_seed.py",
+    "jobbot/scripts/gen_settings.py",
+    "jobbot/state/scan-settings.json",
+    ".claude/settings.local.json",
+    ".claude/settings.json",
+    ".claude/settings*.json"
+  ]
+}

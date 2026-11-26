@@ -97,6 +97,9 @@ ALLOWED_PERMISSIONS = {
     # Reads a file or stdin, writes only to an explicit --out, never fetches.
     "Bash(python tools/posting_guard.py:*)",
     "Bash(python3 tools/posting_guard.py:*)",
+    # Fork-local portal CLIs (/add-portal Step 5).
+    "Bash(bun run .agents/skills/karriere-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/linkedin-search/cli/src/cli.ts:*)",
 }
 
 # Rules that must stay in .claude/settings.json permissions.ask. An ask rule

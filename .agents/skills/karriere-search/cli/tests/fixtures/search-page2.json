@@ -1,0 +1,131 @@
+{
+ "data": {
+  "jobsSearchform": {
+   "keywords": "IT Projektmanager",
+   "locations": "Wien",
+   "page": 2
+  },
+  "jobsSearchList": {
+   "jobsListHeader": {
+    "count": "38"
+   },
+   "loadMoreJobsButton": {
+    "active": true,
+    "number": 2,
+    "next": 3,
+    "showLoadingDots": false
+   },
+   "activeItems": {
+    "items": [
+     {
+      "jobsItem": {
+       "id": "7794569",
+       "link": "https://www.karriere.at/jobs/7794569",
+       "title": "Projektmanagement Construction (w/m/d)",
+       "company": {
+        "slug": "magenta-telekom",
+        "name": "Magenta Telekom",
+        "isChiffre": false
+       },
+       "locations": [
+        {
+         "name": "Wien",
+         "slug": "wien"
+        }
+       ],
+       "isActive": true,
+       "summary": "Projektmanagement für Infrastrukturprojekte, Netzausbau (Tiefbau, LWL, HFC, Datacenter) und Stakeholdermanagement. Mehrjährige Erfahrung im Projektmanagement und fundiertes wirtschaftliches Verständnis sind erforderlich. Flexible Arbeitszeiten werden geboten.",
+       "isHomeOffice": true,
+       "employmentTypes": "Vollzeit",
+       "salary": "ab 3.523,02 € monatlich",
+       "date": "vor 3 Tagen veröffentlicht",
+       "pushedJob": false
+      }
+     },
+     {
+      "jobsItem": {
+       "id": "7908506",
+       "link": "https://www.karriere.at/jobs/7908506",
+       "title": "Controlling Transformation Professional | SAP S/4HANA CO (w/m/d)",
+       "company": {
+        "slug": "ey-%C3%B6sterreich",
+        "name": "EY Österreich",
+        "isChiffre": false
+       },
+       "locations": [
+        {
+         "name": "Wien",
+         "slug": "wien"
+        }
+       ],
+       "isActive": true,
+       "summary": "Konzeption und Implementierung von SAP S/4HANA Controlling-Lösungen (Overhead, Product Cost, Margin Analysis). Mindestens 3 Jahre Erfahrung in SAP S/4HANA Controlling mit Customizing-Know-how. Flexible Arbeitszeitmodelle und Weiterbildungsangebote.",
+       "isHomeOffice": true,
+       "employmentTypes": "Vollzeit",
+       "salary": "ab 78.400 € jährlich",
+       "date": "vor 3 Tagen veröffentlicht",
+       "pushedJob": false
+      }
+     },
+     {
+      "disruptor": "salaryBenchmark"
+     },
+     {
+      "jobsItem": {
+       "id": "10037361",
+       "link": "https://www.karriere.at/jobs/10037361",
+       "title": "IT - Projektmanager:in",
+       "company": {
+        "slug": "vbv-betriebliche-altersvorsorge",
+        "name": "VBV",
+        "isChiffre": false
+       },
+       "locations": [
+        {
+         "name": "Wien",
+         "slug": "wien"
+        }
+       ],
+       "isActive": true,
+       "summary": "Koordination von IT-Projekten von Initiierung bis Abschluss, inklusive Zeit-, Kosten- und Meilensteinüberwachung. Erstellung von Management-Dashboards. Grundkenntnisse klassischer und agiler Methoden sind erforderlich. Regelmäßige Aus- und Weiterbildungsmöglichkeiten werden geboten.",
+       "isHomeOffice": true,
+       "employmentTypes": "Vollzeit",
+       "salary": "ab 60.000 € jährlich",
+       "date": "vor 3 Tagen veröffentlicht",
+       "pushedJob": false
+      }
+     },
+     {
+      "jobsItem": {
+       "id": "10038773",
+       "link": "https://www.karriere.at/jobs/10038773",
+       "title": "IT-Projektleiter:in – Public Sector (w/m/d)",
+       "company": {
+        "slug": "fabasoft",
+        "name": "Fabasoft",
+        "isChiffre": false
+       },
+       "locations": [
+        {
+         "name": "Wien",
+         "slug": "wien"
+        },
+        {
+         "name": "Linz",
+         "slug": "linz"
+        }
+       ],
+       "isActive": true,
+       "summary": "Verantwortung für Kundenprojekte, von Planung bis Abschluss. Erfahrung in IT-Projektsteuerung erforderlich. Bieten flexible Arbeitszeiten und Homeoffice-Möglichkeit.",
+       "isHomeOffice": true,
+       "employmentTypes": "Vollzeit",
+       "salary": "ab 4.500 € monatlich",
+       "date": "vor 3 Tagen veröffentlicht",
+       "pushedJob": false
+      }
+     }
+    ]
+   }
+  }
+ }
+}

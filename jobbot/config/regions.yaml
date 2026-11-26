@@ -1,0 +1,11 @@
+# Search regions. Edit by hand or from Telegram: /region on|off <name>, /regions
+remote_worldwide: true      # fully remote jobs worldwide, when a candidate based in Europe is accepted
+
+regions:
+  wien:       { enabled: true,  country: AT, names: [Wien, Vienna, Vienne] }
+  salzburg:   { enabled: false, country: AT, names: [Salzburg] }
+  linz:       { enabled: false, country: AT, names: [Linz] }
+  graz:       { enabled: false, country: AT, names: [Graz] }
+  austria:    { enabled: false, country: AT, names: [Österreich, Austria] }   # rest of Austria
+  bratislava: { enabled: false, country: SK, names: [Bratislava] }
+  budapest:   { enabled: false, country: HU, names: [Budapest] }

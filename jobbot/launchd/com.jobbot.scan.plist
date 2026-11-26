@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.jobbot.scan</string>
+	<key>UserName</key>
+	<string>jobbot</string>
+	<key>GroupName</key>
+	<string>staff</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>/Users/jobbot/ai-job-search/jobbot/scripts/run_scan.sh</string>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/jobbot/ai-job-search</string>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>HOME</key>
+		<string>/Users/jobbot</string>
+		<key>USER</key>
+		<string>jobbot</string>
+		<key>PATH</key>
+		<string>/Users/jobbot/.local/bin:/Users/jobbot/.bun/bin:/Library/TeX/texbin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+		<key>LANG</key>
+		<string>en_US.UTF-8</string>
+		<key>LC_ALL</key>
+		<string>en_US.UTF-8</string>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>/Users/jobbot/ai-job-search/jobbot/state/runs/launchd-scan.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/jobbot/ai-job-search/jobbot/state/runs/launchd-scan.log</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>StartInterval</key>
+	<integer>14400</integer>
+</dict>
+</plist>

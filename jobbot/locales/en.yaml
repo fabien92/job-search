@@ -1,0 +1,592 @@
+# JobBot — Telegram message texts, in English (reference language and default).
+# Every other locales/<code>.yaml has the same keys; a key missing there falls back to this file.
+# {name} = value inserted by the code; write {{ or }} for a literal brace.
+# Telegram HTML allowed: <b>, <i>, <code>, <a href>. Write &lt; and &gt; for < and >.
+# Language chosen with /lang (saved in state/settings.json).
+
+lang:
+  self_name: "English"
+  current: "Language: <b>{name}</b> ({code}). Change: /lang {choices}"
+  set: "Language: <b>{name}</b>. JobBot now writes in English."
+  unknown: "Unknown language: {code}. Choices: {choices}"
+
+bot:
+  busy: "State busy (lock); try again in a moment."
+  error: "Error: {name}"
+  unknown_command: "Unknown command. /help"
+  corrupt_state: "⚠️ State file <code>{file}</code> is unreadable (invalid JSON). Nothing was changed. Restore it from the backup or repair it by hand, then try again."
+  tracker_malformed: "⚠️ Tracker not updated: the row at line {line} ({company}) has more cells than the header (an unquoted comma?). Repair job_search_tracker.csv, then send the command again."
+  needs_claude: "This command needs Claude: it is unavailable with <code>scoring: rules</code> (see schedule.yaml)."
+
+help:
+  text: |-
+    <b>JobBot — commands</b>
+    /search &lt;site|all&gt; — search now ({portals}, all)
+    /no &lt;ID&gt; [reason] — reject the posting; the reason (optional) is added to rejection-rules.md; shown posting → the next one follows
+    /queue — waiting postings, numbered (only one is shown at a time)
+    /show &lt;n&gt; — show posting n of /queue now; the shown posting goes back to the queue
+    /rules — numbered rejection rules (date, reason, link to the original posting)
+    /rule del 2 5-7 — delete these rules (after /rules, with confirmation)
+    /go &lt;ID&gt; [ID…] — prepare the application (CV + offre.pdf, as a reply to the alert)
+    /sent &lt;ID&gt; — application sent: CSV "applied", files removed from Telegram (S…: spontaneous); then the next posting
+    /cancel &lt;ID&gt; — give up: posting closed, never proposed again; then the next posting
+    /reply &lt;ID&gt; yes|no — answer received (yes = positive, no = refusal): CSV status, follow-up reminders stopped; S…: keep or purge the contact
+    /pending — prepared applications not sent yet ("resend the files" button)
+    /company &lt;name&gt; — applications at this company
+    /allow 1 3-5 | /allow all — approve pending sites (numbers from the recap)
+    /deny 4 — refuse a pending site (never proposed again)
+    /sites — numbered list of pending sites
+    /spont &lt;company&gt; — prepare a spontaneous application (e-mail + LinkedIn drafts, CV); nothing is sent
+    /discover &lt;region&gt; — look for new companies (proposals to approve)
+    /companies — proposed companies, numbered
+    /accept 1 3-5 | /reject 2 — approve or drop proposals (dropped = never proposed again)
+    /block &lt;company&gt; — exclude the company from every search
+    /blocked — blocked companies, numbered
+    /unblock &lt;n&gt; — unblock one company (number from /blocked)
+    /region on|off &lt;name&gt; — enable/disable a region (<code>remote</code> = remote worldwide)
+    /regions — list of regions
+    /status — last run, next run, active alerts
+    /rejects — IT postings dropped in the last run (non-IT hidden)
+    /health — full check (secrets, Telegram, bun, lualatex, disk, whitelist, Claude token)
+    /lang [en|fr] — message language
+    Same commands: /file = /queue, /voir = /show, /rejets = /rejects, /firma = /company
+    /help — this help
+
+# Telegram command menu (published by the bot at start and after /lang): plain text, no HTML.
+# Command names shown in the menu and the help (the bot accepts both names).
+command:
+  file: "queue"
+  voir: "show"
+  rejets: "rejects"
+  firma: "company"
+
+menu:
+  file: "Waiting postings, numbered"
+  voir: "Show posting n of /queue"
+  go: "Prepare the application (CV + offre.pdf)"
+  sent: "Application sent"
+  cancel: "Give up the posting"
+  reply: "Answer received (yes or no)"
+  "no": "Reject the posting [reason]"
+  pending: "Prepared applications not sent yet"
+  search: "Search now (site or all)"
+  status: "Last and next run, alerts"
+  rejets: "IT postings dropped in the last run"
+  rules: "Numbered rejection rules"
+  rule: "Delete rules (del 2 5-7)"
+  firma: "Applications at a company"
+  sites: "Sites waiting for approval"
+  allow: "Approve pending sites"
+  deny: "Refuse a pending site"
+  spont: "Prepare a spontaneous application"
+  discover: "Look for new companies"
+  companies: "Proposed companies"
+  accept: "Approve proposals"
+  reject: "Drop proposals"
+  block: "Exclude a company from searches"
+  blocked: "Blocked companies"
+  unblock: "Unblock a company"
+  region: "Enable/disable a region"
+  regions: "List of regions"
+  health: "Full check"
+  lang: "Message language (en, fr)"
+  help: "Help"
+
+common:
+  unknown_id: "Unknown ID: {id}"
+  invalid_id: "Invalid ID: {id}"
+  one_id: "Refused: /{command} needs an ID (just one). Example: /{command} 12"
+  bad_selection: "Invalid selection. Numbers 1 to {n}, e.g. {example}"
+  bad_number: "Invalid number: 1 to {n}."
+  list_first: "Run /{command} first to get the numbered list."
+  age_days: "{d} d {h} h"
+  age_hours: "{h} h"
+  offer: "posting"
+  source: "source"
+  none_m: "none"
+  none_f: "none"
+  whitelist_missing: "whitelist not initialised (scan-settings.json missing)"
+
+# Scoring vocabulary: fixed codes written by the scoring step, shown in English.
+# The French codes below them are the former vocabulary, kept so that older state files still display.
+values:
+  contract:
+    "permanent": "permanent"
+    "fixed_term_long": "fixed-term ≥ 12 months"
+    "fixed_term_short": "fixed-term < 12 months"
+    "fixed_term_unknown": "fixed-term, length unknown"
+    "part_time": "part-time"
+    "freelance": "freelance"
+    "unknown": "unknown"
+    "CDI": "permanent"
+    "CDD ≥ 12 mois": "fixed-term ≥ 12 months"
+    "CDD < 12 mois": "fixed-term < 12 months"
+    "CDD durée inconnue": "fixed-term, length unknown"
+    "temps partiel": "part-time"
+    "freelance": "freelance"
+    "inconnu": "unknown"
+  remote:
+    "onsite": "on-site"
+    "hybrid": "hybrid"
+    "remote": "fully remote"
+    "unknown": "unknown"
+    "présentiel": "on-site"
+    "hybride": "hybrid"
+    "100 % télétravail": "fully remote"
+    "inconnu": "unknown"
+
+alert:
+  salary_none: "not shown"
+  company_none: "Company not given"
+  location_none: "location ?"
+  terms: "Contract: {contract} · Remote: {remote} · Salary: {salary}"
+  adapt_yes: "tailoring yes"
+  adapt_no: "tailoring no"
+  cv: "CV: {variant} · {adapt}{reason}"
+  commands: "/go {id} · /no {id} [reason]"
+
+queue:
+  next_below: "Next posting below (if there is one)."
+  removed: "Removed from the queue."
+  expired: "⌛ {n} posting(s) removed from the queue (deadline passed): {names}"
+  arrival: "📥 {new} new posting(s), {waiting} waiting · /queue"
+  stale: "⚠️ Waiting for {age}: check it is still online."
+  others: "📥 {n} more waiting · /queue"
+  status_shown: "📬 Shown posting{tag}: #{id} {company} · {link} for {age}"
+  status_none: "📬 No posting shown{tag}"
+  status_line: "{head} · {n} waiting — /queue"
+
+sites:
+  none: "No site waiting."
+  title: "<b>Sites waiting for approval</b>"
+  done: "{n}. {domain} — already handled"
+  requested_by: " — requested by {link}"
+  answer: "Reply /allow 1 3-5, /allow all or /deny 4."
+  list_changed: "The numbered list has changed: new sites are waiting."
+  nothing_to_do: "Nothing to do: these sites were already handled."
+  allowed: "{n} site(s) allowed:"
+  denied: "{n} site(s) refused, never proposed again:"
+  regenerated: "Settings regenerated."
+
+"no":
+  usage: "Refused: /no needs an ID. Example: /no 12 German C1 required"
+  too_long: "Refused: reason too long (300 characters max, one line)."
+  done: "Posting #{id} rejected ({title} — {company})."
+  rule_added: "Rule added: <i>{rule}</i>"
+  no_rule: "No reason: no rule added."
+  test_no_rule: "Test mode: no rule written."
+  already: "#{id} is already rejected: nothing changed, no rule added."
+
+regions:
+  title: "<b>Regions</b>"
+  remote: "100 % remote worldwide (candidate based in Europe accepted)"
+  change: "Change: /region on|off &lt;name&gt;"
+
+region:
+  usage: "Usage: /region on|off &lt;name&gt; (see /regions)"
+  unknown: "Unknown region: {name}. See /regions"
+  bad_format: "Cannot change {name}: unexpected regions.yaml format (edit it by hand)."
+  enabled: "Region <code>{name}</code>: enabled."
+  disabled: "Region <code>{name}</code>: disabled."
+
+status:
+  title: "<b>JobBot status</b>"
+  last_run: "Last run: {when} — {status} · seen {seen} · new {new} · scored {scored} · alerts {alerted} · {cost} USD"
+  next_run: "Next run expected around: {when}"
+  no_run: "No run recorded."
+  running: "🔄 A run is in progress."
+  alerts: "<b>Active alerts</b>"
+  no_alerts: "No active alert."
+  sites_pending: "{n} site(s) waiting for approval: /sites"
+
+rejets:
+  none: "No run with details available."
+  title: "<b>IT rejects — run {when}</b>"
+  counts: "{shown} shown · {hidden} non-IT hidden"
+  empty: "No IT posting dropped."
+  scored: "Scored, then rejected"
+  rules: "Fixed rules"
+  rules_note: "not scored · IT title"
+  reason:
+    german_level: "🇩🇪 German required"
+    contract_short: "⏱ Contract < 12 months"
+    freelance: "🧾 Freelance"
+    internship: "🎓 Internship"
+    title_excluded: "🚫 Excluded title"
+    company_excluded: "🏢 Excluded company"
+    company_blocked: "⛔ Blocked company (/block)"
+    location_outside_regions: "📍 Outside regions"
+    location: "📍 Location"
+    remote_region: "🌍 Remote outside the zone"
+    pure_developer: "💻 Pure developer"
+    too_old: "⌛ Too old"
+    no_text: "📄 No readable text"
+    expired: "⌛ Expired"
+    rejection_rule: "📏 /no rule"
+    other: "❓ Other"
+
+health:
+  title: "JobBot check (/health)"
+  queued: "📨 {n} message(s) queued (resent after the next successful send)"
+
+search:
+  unknown: "Unknown site: {site}. Choices: {choices}"
+  busy: "A run is already in progress; try again later (/status)."
+  linkedin_note: " (LinkedIn stays limited by linkedin_runs_per_day)"
+  started: "Search started: {site}{note}. Matching postings will arrive here."
+
+go:
+  usage: "Refused: /go needs an ID. Example: /go 12 (several: /go 12 15)"
+  unknown: "#{id}: unknown ID"
+  closed:
+    sent: "already sent"
+    cancelled: "given up"
+    rejected: "rejected"
+  closed_nothing: "{label}: {status}, nothing to prepare"
+  ready: "{label}: already prepared — /pending to resend the files"
+  running: "{label}: already being prepared"
+  how_adapt: "CV tailored by Claude"
+  how_variant: "variant CV, zero tokens"
+  where_queue: "Removed from the queue; the files will arrive here."
+  where_alert: "The files will arrive as a reply to the alert."
+  started: "{label}: preparation started ({how}). {where}"
+  # go.py
+  not_installed: "/jobbot-go command not installed (.claude/commands/jobbot-go.md)"
+  claude_failed: "Claude failed ({error})"
+  no_overrides: "Claude did not write cv_overrides.tex"
+  overrides_refused: "cv_overrides.tex refused ({error})"
+  compile: "compilation: {errors}"
+  failed: "failed"
+  adapted_note: "CV tailored (cv_overrides.tex)"
+  layout_check: " — layout to check: {problems}"
+  layout_unavailable: " — layout check unavailable (Poppler missing), 2 pages checked"
+  summary_cv_adapted: "CV: variant <b>{variant}</b> · tailored"
+  summary_cv_plain: "CV: variant <b>{variant}</b> · as is"
+  offer_missing: "⚠️ offre.pdf not generated: {error}"
+  apply_link: "Apply / see the posting"
+  after: "Once sent: /sent {id} · give up: /cancel {id}"
+  unknown_id: "/go {id}: unknown ID"
+  no_test_alert: " (no recent test alert)"
+  already_ready: "#{id} is already prepared (/pending to resend the files)."
+  no_posting: "/go {id}: archived posting not found ({name}) — postings scored before V2 are not archived."
+  adapt_dropped: "Tailoring dropped, variant sent as is: {note}"
+  no_variant: "No variant proposed by the scoring: {variant} by default"
+  variant_missing: "/go {id}: {name} missing — run build_cv_variants.py"
+  incomplete: "⚠️ Incomplete send: {errors}\n/pending to resend #{id}."
+  crashed: "❌ /go {id} failed: {error}"
+
+files:
+  manual_item: "{name} (sent on {when}: {why})"
+  deleted: "Files removed from Telegram: {n}"
+  manual: "⚠️ <b>Delete by hand</b> — the Bot API only deletes messages younger than {hours} h:"
+  local_kept: "Local folder kept: {name}"
+
+sent:
+  not_pending: "#{id} is not pending (no /go, or already /sent / /cancel). /pending for the list."
+  done: "✅ #{id} sent — {company} · {title}"
+  csv_test: "unchanged (test mode)"
+  csv_missing: "row not found or already further along"
+
+cancel:
+  already: "#{id} was already given up."
+  done: "🗑 #{id} given up — {company} · {title}: posting closed, never proposed again."
+
+reply:
+  usage: "/reply &lt;ID&gt; yes|no — answer received: yes = positive (interview), no = refusal. Example: /reply 12 yes"
+  word_yes: "positive"
+  word_no: "refusal"
+  done: "📬 #{id} {company} · {title}: {answer} answer — CSV {old} → {new}. Follow-up reminders stopped.{tag}"
+  outcome_hint: "Details (stages, feedback, outcome.md): <code>/outcome {company}</code> in Claude Code."
+  spont_done: "📬 {id} {company}: {answer} answer recorded. Follow-up reminders stopped.{tag}"
+  not_sent: "#{id} was not sent (/sent {id} first)."
+  closed: "#{id} is already closed (status {status})."
+  already: "#{id}: answer already recorded ({status})."
+  missing: "#{id}: no tracker row with the marker jobbot #{id}."
+
+followup:
+  spont_label: "spontaneous application"
+  title: "{tag}⏰ <b>Follow-up due</b> — {ref} {company} · {what}"
+  quiet: "No news for {days} days · follow-ups sent: {count}/{max}"
+  offer_hint: "Draft: <code>/outcome followup {company}</code> in Claude Code (it logs the follow-up itself; otherwise press “Follow-up sent”)."
+  spont_hint: "Contact: {contact}. Send a short follow-up yourself, then press “Follow-up sent”."
+  commands: "Answer received: /reply {id} yes|no"
+  exhausted: "{tag}⌛ <b>Still no answer</b> — {ref} {company} · {what}: {days} days since the last follow-up ({count}/{max}). No further reminder."
+  exhausted_offer: "To close it: <code>/outcome {company}</code> (no_response) in Claude Code · answer received: /reply {id} yes|no"
+  exhausted_spont: "Answer received: /reply {id} yes|no"
+  btn_done: "✉️ Follow-up sent"
+  btn_yes: "👍 Answer: yes"
+  btn_no: "👎 Answer: no"
+  logged: "✉️ #{id}: follow-up logged ({count}/{max}). Next reminder in {days} days without an answer.{tag}"
+  logged_last: "✉️ #{id}: follow-up logged ({count}/{max}, the last one). In {days} days without an answer: a final notice, then nothing more.{tag}"
+  already_today: "#{id}: follow-up already logged today."
+  not_open: "#{id}: no follow-up to log (status {status})."
+
+contact:
+  question: "📇 <b>Keep this contact?</b> {id} {company} — {contact}\nPurge = name, address and LinkedIn deleted (only a fingerprint stays, so they are never contacted again)."
+  btn_keep: "📇 Keep"
+  btn_purge: "🧹 Purge"
+  kept: "📇 {id} {company}: contact kept.{tag}"
+  purged: "🧹 {id} {company}: contact purged (drafts deleted: {files}). The company and a fingerprint stay: never proposed again.{tag}"
+  already_purged: "{id}: contact already purged."
+  already_kept: "{id}: contact already kept ({date})."
+  not_sent: "{id}: nothing to decide (status {status})."
+
+file:
+  shown: "Shown{tag}: <b>#{id}</b> · {score} · {link} · {company} (for {age})"
+  empty: "Queue empty: no other posting."
+  title: "<b>Waiting postings: {n}</b>"
+  published: " · published {date}"
+  queued_since: "queued for {age}"
+  show_hint: "Show: /show &lt;n&gt; (the shown posting goes back to the queue)"
+
+voir:
+  usage: "Refused: /show needs a number from /queue. Example: /show 2"
+  gone: "This posting is no longer in the queue (list changed). Run /queue again."
+  done: "Posting #{id} shown above; the previous posting went back to the queue."
+
+pending:
+  none: "No application waiting to be sent."
+  title: "<b>Waiting to be sent: {n}</b>"
+  line: "{link} · /go on {when} · for {age} · CV {variant}{adapted}"
+  adapted: " tailored"
+  button: "📎 #{id} resend the files"
+
+resend:
+  gone: "#{id} is no longer pending."
+  missing: "{name}: local file missing"
+  done: "#{id}: {n} file(s) resent."
+
+firma:
+  usage: "Refused: /company needs a name. Example: /company Erste"
+  none: "No application for \"{query}\"."
+  title: "<b>Applications — {query}: {n}</b>"
+  status: "{date} · status <b>{status}</b> · {link}"
+  no_letter: "none"
+  cv_sent: "CV sent: {cv} · letter: {letter}"
+  cv_prepared: "CV prepared: {cv} · letter: {letter}"
+
+rules:
+  free: "(free format)"
+  none: "No rejection rule."
+  title: "<b>Rejection rules: {n}</b>"
+  delete_hint: "Delete: /rule del 2 5-7"
+
+rule:
+  usage: "Usage: /rule del 2 5-7 (numbers from /rules)"
+  confirm_title: "<b>Delete {n} rule(s)?</b>"
+  confirm_valid: "Confirmation valid for {minutes} min."
+  confirm_button: "🗑 Confirm"
+  cancel_button: "Cancel"
+  expired: "Confirmation expired or already used: run /rules then /rule del again."
+  deleted: "{n} rule(s) deleted."
+  missing: "⚠️ {n} rule(s) changed or already removed meanwhile, not deleted:"
+  cancelled: "Deletion cancelled, no rule removed."
+
+company:
+  usage: "Refused: /{command} needs a company name. Example: /{command} ACME GmbH"
+  invalid: "Invalid name: {name}"
+
+block:
+  already: "{name} is already blocked. /blocked for the list."
+  done: "⛔ {name} blocked: excluded from every search (portals and career pages), from discovery and from spontaneous applications."
+  covers: "Also covers: {names}"
+  undo: "Undo: /blocked then /unblock &lt;n&gt;"
+
+blocked:
+  none: "No blocked company."
+  title: "<b>Blocked companies: {n}</b>"
+  hint: "Unblock a company: /unblock &lt;n&gt;"
+
+unblock:
+  usage: "Refused: /unblock needs one number from /blocked. Example: /unblock 2"
+  gone: "This company is no longer blocked (list changed). Run /blocked again."
+  done: "✅ {name} unblocked: included in searches again.\nThe numbering has changed: run /blocked again before another /unblock."
+
+discover:
+  usage: "Refused: /discover needs an enabled region ({regions}). Example: /discover wien"
+  busy: "A discovery is already in progress."
+  busy_cmd: "/discover: a discovery is already in progress."
+  started: "Discovery started for {region}. Proposals will arrive here (/companies to approve them)."
+  bad_region: "/discover: region {region} unknown or disabled (/regions)."
+  not_installed: "/discover: /jobbot-discover command not installed (see INSTALL.md, cp jobbot/commands/…)."
+  failed: "/discover {region}: failed ({error})."
+  no_file: "no file written"
+  result: "<b>Discovery {region}</b>: {n} company(ies) proposed · already known {known} · excluded {excluded} · blocked {blocked} · already contacted {contacted}"
+  invalid: " · invalid {n}"
+  cost: "estimated cost {cost} USD"
+  validate: "Approve: /companies then /accept 1 3-5 or /reject 2"
+
+companies:
+  none: "No proposed company. /discover &lt;region&gt; to look for some."
+  title: "<b>Proposed companies: {n}</b>"
+  answer: "Reply /accept 1 3-5, /accept all or /reject 2."
+  nothing_to_do: "Nothing to do: already handled. Run /companies again."
+  accepted: "✅ {n} company(ies) added to the targets. Their sites will go through the whitelist (/sites)."
+  rejected: "🗑 {n} company(ies) dropped, never proposed again."
+  skipped: "({n} already handled)"
+
+spont:
+  refused: "/spont {name}: refused — {why}."
+  running: "{name}: already being prepared."
+  running_cmd: "/spont {name}: already being prepared."
+  started: "Preparation started for {name}: contact (Impressum, career page, then LinkedIn), e-mail and LinkedIn drafts, CV. Nothing will be sent."
+  already: "{id} already has status {status}."
+  sent: "✅ {id} sent — {company} ({contact}){tag}.\nThis contact and this company will never be proposed again."
+  cancelled: "🗑 {id} given up — {company}{tag}: no longer proposed."
+  # spontaneous.py
+  unknown_company: "company not in companies.csv (/companies, import_companies.py)"
+  company_status: "company has status {status}"
+  already_contacted: "already contacted or application already sent — never proposed again"
+  no_website: "official website unknown in companies.csv"
+  source_unreadable: "source unreadable ({reason})"
+  email_not_on_page: "address not on the source page"
+  output_unreadable: "unreadable output"
+  email_invalid: "invalid e-mail address, ignored"
+  email_no_source: "address without a source on the official site, ignored"
+  email_unconfirmed: "address not confirmed ({why}), ignored"
+  linkedin_invalid: "LinkedIn profile invalid or without a source, ignored"
+  linkedin_too_long: "LinkedIn message too long ({n} > {max}), not kept"
+  email_incomplete: "incomplete e-mail draft, address not kept"
+  no_contact: "no verified contact (no address confirmed on the official site, no LinkedIn profile)"
+  summary_title: "<b>{tag}✉️ {id} · spontaneous application · {name}</b>"
+  summary_contact: "Contact: {contact}"
+  summary_email: "E-mail: <code>{email}</code> · {source}"
+  summary_linkedin: "LinkedIn: {profile} · {source}"
+  profile: "profile"
+  no_message: " (no message kept)"
+  summary_cv: "CV: variant <b>{variant}</b> · site: {site}"
+  summary_after: "Nothing is sent: copy the draft, send it yourself, then /sent {id} · give up: /cancel {id}"
+  site_not_allowed: "/spont {name}: the official site {site} is not allowed. It is pending: /sites then /allow, and run /spont again."
+  not_installed: "/spont: /jobbot-spontaneous command not installed (see INSTALL.md)."
+  duplicate: "contact already approached ({id})"
+  nothing: "/spont {name}: nothing prepared — {why}."
+  variant_missing: "/spont: {name} missing — run build_cv_variants.py"
+
+spont_list:
+  none: "<b>Spontaneous applications</b>: no company to propose tonight (all contacted, blocked or listed recently)."
+  title: "<b>Spontaneous applications — tonight's ideas</b>"
+  to_allow: " · site to allow"
+  hint: "Nothing is sent: /spont prepares the draft (e-mail + LinkedIn) and the CV."
+
+telegram:
+  deferred: "<i>(delayed — due {when})</i>"
+  queue_full: "⚠️ Telegram queue full: {n} old message(s) lost."
+  unreadable: "unreadable file: {error}"
+  send_refused: "send refused"
+  too_old: "older than {hours} h"
+  delete_refused: "deletion refused"
+
+daily:
+  title: "<b>JobBot recap — {date}</b>"
+  alive: "✅ <b>JobBot running</b>"
+  alive_no_run: "⚠️ <b>JobBot running, but no run for 24 h</b> — check com.jobbot.scan (launchd)"
+  last_run: "Last run: {when} ({status}) · next around {next}"
+  all_green: "all green"
+  check: "Check: {icon} {detail} (/health for details)"
+  initial_stock: "⏳ Initial stock: postings waiting to be scored: {n}"
+  tg_queued: "📨 {n} Telegram message(s) queued"
+  last_24h: "24 h: {runs} run(s) ({failed} failed) · seen {seen} · new {new} · scored {scored} · alerts {alerted} · estimated cost {cost} USD"
+  nothing_new: "No new posting since yesterday."
+  stale_title: "<b>⏰ Prepared, not sent yet (&gt; {hours} h): {n}</b>"
+  stale_item: "• #{id} {company} · {link} — for {age} · /sent {id} · /cancel {id}"
+  stale_hint: "/pending to resend the files"
+  followups: "✉️ <b>Follow-ups due: {n}</b> — {ids} (reminders above, /reply &lt;ID&gt; yes|no)"
+
+weekly:
+  title: "<b>JobBot weekly report — {start} → {end}</b>"
+  runs: "Runs: {runs} ({failed} failed)"
+  offers: "Postings seen {seen} · new {new} · scored {scored} · kept (alerts) {alerted}"
+  applications_one: "Applications: /go {go} ({adapted} tailored CV) · sent {sent} · given up {cancelled} · pending {pending}"
+  applications_many: "Applications: /go {go} ({adapted} tailored CVs) · sent {sent} · given up {cancelled} · pending {pending}"
+  answers: "Answers (CSV statuses, all dates): {detail}"
+  no_answers: "Answers: none recorded in the CSV"
+  replies: "This week (/reply): positive {yes} · refusals {no} · follow-ups logged {followups}"
+  empty_sites: "Sites without results this week: {sites}"
+  down_sites: "Sites down: {sites}"
+  down_days: "{site} ({n} d)"
+  cost: "Estimated cost: {total} USD (scoring {scan} · /go {go})"
+
+monitor:
+  crashed: "❌ Run failed before the end: {error}"
+  unknown_error: "unknown error"
+  claude_auth: "🔑 Claude: authentication or quota failure (run {run}).\n<code>{error}</code>\nCheck CLAUDE_CODE_OAUTH_TOKEN (claude setup-token) or the subscription quota."
+  claude_budget: "💶 --max-budget-usd cap reached (run {run}, {cost} USD). Unscored postings will come back in the next run."
+  see_log: "see the log"
+  run_failed: "❌ Run {run} failed: {detail}"
+  cap_reached: "⚠️ max_scored_per_run cap reached (run {run}): {n} postings deferred to the next run."
+  site_down: "🔌 {site}: every query failed (run {run})."
+  zero: "🕳 {site}: 0 postings for {days} days (broken parser or blocked site?)."
+  reminder: "(reminder) {text}"
+  recovered: "✅ Runs back to normal."
+  blocked_hosts: "🚧 Blocked host(s), waiting for approval (daily recap, /allow /deny):"
+
+preflight:
+  title: "JobBot check"
+  run_cancelled: "❌ <b>Run cancelled</b> — pre-flight check failed:"
+  recovered: "✅ Pre-flight check green again."
+  token_alert: "🔑 Claude token: {detail} — {action}"
+  internal: "internal error: {error}"
+  missing: "missing: {names}"
+  complete: "fill in {path}"
+  chat_id: "TELEGRAM_CHAT_ID is not numeric"
+  fix: "fix {path}"
+  mode: "{name} has mode {mode}"
+  present: "present"
+  no_token: "no TELEGRAM_TOKEN"
+  see_secrets: "see secrets"
+  token_refused: "token refused ({error})"
+  botfather: "create a new token with @BotFather"
+  unreachable: "unreachable ({error}) — messages queued"
+  not_found: "{cmd} not found (PATH={path})"
+  install_bun: "install bun (curl -fsSL https://bun.sh/install | bash) or fix PATH"
+  portal_missing: "portal CLI missing: {names}"
+  restore_skills: "restore .agents/skills/"
+  texbin: "check /Library/TeX/texbin is in PATH"
+  venv_missing: "jobbot/.venv missing"
+  import_failed: "import failed"
+  venv_ok: "telegram + yaml importable"
+  disk_low: "{free} GB free on {path} (< {min} GB)"
+  free_disk: "free up disk space"
+  disk_on: "{free} GB free on {path}"
+  disk_free: "{free} GB free"
+  sites_unreadable: "sites.yaml unreadable: {error}"
+  fix_sites: "fix jobbot/config/sites.yaml"
+  sites_missing: "sites.yaml missing"
+  no_site: "no allowed site"
+  import_seed: "import sites-seed.md or /allow"
+  whitelist_ok: "{n} allowed domains, {pending} pending"
+  rule_missing: "{rule} missing"
+  rule_missing_m: "{rule} missing"
+  file_missing: "{name} missing"
+  file_unreadable: "{name} unreadable"
+  sandbox_flags: "{name}: wrong sandbox flags"
+  strict_missing: "{name}: strictAllowlist missing"
+  domains_stale: "{name}: domains differ from sites.yaml (stale settings)"
+  regenerate: "regenerate: jobbot/.venv/bin/python jobbot/scripts/gen_settings.py (from your terminal)"
+  sandbox_ok: "settings up to date ({n} domains)"
+  oauth_missing: "CLAUDE_CODE_OAUTH_TOKEN missing"
+  setup_token: "claude setup-token, then secrets.env"
+  expiry_unknown: "expiry unknown (CLAUDE_CODE_OAUTH_TOKEN_CREATED missing or invalid)"
+  add_created: "add CLAUDE_CODE_OAUTH_TOKEN_CREATED=YYYY-MM-DD to secrets.env"
+  token_expired: "token expired on {date}"
+  renew_token: "claude setup-token, update secrets.env (token + date)"
+  expires: "expires on {date} (in {days} d)"
+  renew_before: "claude setup-token before the expiry, then secrets.env"
+
+# Passed to Claude in the scoring batch (prefilter.py): language of justification, adapt_reason, flags.
+scoring:
+  language: "English"
+  flag:
+    german_check: "German to check"
+    duration_unknown: "duration unknown"
+    suspicious: "suspicious content"
+    detail_unavailable: "details unavailable"
+
+backup:
+  failed: "💾 Nightly backup failed: <code>{error}</code>"
+
+scan:
+  no_whitelist: "whitelist not initialised: run jobbot/scripts/import_seed.py"
+
+offer:
+  unreadable: "archived posting unreadable: {error}"

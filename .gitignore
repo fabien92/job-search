@@ -121,3 +121,24 @@ company_research/*.json
 
 # Brainstorm mockups (superpowers visual companion) - never ship
 .superpowers/
+
+# JobBot
+jobbot/state/
+jobbot/.venv/
+
+# Private candidate data (profile, identity, real CV content, JobBot criteria).
+# Tracked files hold fictional templates; private/ overrides them when present.
+# cover_letters/ outputs are already covered by cover_letters/cover_*.* above
+# (a /cover_letters/* rule would need negations outside the security_guards allowlist).
+/private/
+/cv/*
+!cv/main_example.tex
+
+/cover_letters/*
+!cover_letters/cover.cls
+!cover_letters/cover_example.tex
+!cover_letters/OpenFonts/
+
+# JobBot's live site whitelist: generated from jobbot/config/sites-seed.md by
+# import_seed.py and rewritten by the bot (/allow, /deny). Personal, never shared.
+jobbot/config/sites.yaml

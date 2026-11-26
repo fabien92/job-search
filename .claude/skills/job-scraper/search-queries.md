@@ -1,6 +1,5 @@
 # Search Queries for Job Scraper
 
-<!-- SETUP: Customize these queries based on your skills, target roles, and location -->
 
 ## Installed portal CLIs (primary for `/scrape`)
 
@@ -12,108 +11,126 @@ The `site:` query templates in this file are the **WebSearch fallback** — for 
 
 ## Search Sites
 
-Primary (your market's job boards - scaffold one with `/add-portal`):
-- **[YOUR_JOB_BOARD]** - your market's largest general job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: [YOUR_COUNTRY] / [YOUR_CITY]); also covered by the community `linkedin-search` CLI once installed
-- **[YOUR_INDUSTRY_JOB_BOARD]** - a niche/industry board for your field (optional)
-- **[YOUR_ADDITIONAL_JOB_BOARD]** - another major board for your market (optional)
+Primary:
+- **linkedin.com/jobs** - covered by the installed `linkedin-search` CLI (`.agents/skills/linkedin-search/`); location Vienna, Austria
+- **karriere.at** - Austria's largest job board (WebSearch fallback until a portal CLI is added)
+- **stepstone.at** - StepStone Austria (WebSearch fallback)
+- More boards to be added later (the user will list them; check community-portals or use `/add-portal`)
 
 Secondary (company career pages via Google):
-- Direct Google searches with `site:` filters for known target companies
+- Direct Google searches with `site:` filters for target companies (to be defined later)
 
 ## Query Categories
 
-Queries are grouped by priority. Write **each category in every language from your Languages table** (see Language scope above). Combine each query with your location terms (e.g. your city, region, or metro area) where the site supports it.
+Queries are grouped by priority and written in **English and German** (the candidate's working languages for the Vienna market; French is declared but irrelevant for search there). Combine each query with location terms (Wien / Vienna) where the site supports it.
 
-Each priority has two kinds of block. **Plain terms** blocks are what the portal CLIs consume: one term per line, one CLI call per term, no `OR`, no `site:` prefix, and no location (the CLI's location flag, or the city in `--query` where that portal's SKILL.md says so, carries it). Quote a multi-word phrase only if the portal's `Query syntax:` line says quoting is honoured. **WebSearch-only** blocks are Google syntax (`site:`, quotes, `OR`) for the fallback path and are never passed to a CLI.
+Each priority has two kinds of block. **Plain terms** blocks are what the portal CLIs consume: one term per line, one CLI call per term, no `OR`, no `site:` prefix, and no location. **WebSearch-only** blocks are Google syntax for the fallback path and are never passed to a CLI.
 
-**Organize by function, not job title.** The same underlying work carries different titles across companies and markets (a "Data Scientist" role at one employer may be posted as "Insights Analyst" or "Data Consultant" at another). Name each priority category after the function it covers, and list several plausible job titles as query variants within that category rather than betting an entire priority tier on one exact title string.
+### Priority 1: Technical delivery & project leadership
 
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
-
-These match your strongest and most desired career direction.
+Steering technical delivery without being a developer - strongest and most desired direction.
 
 #### Plain terms (portal CLIs)
 
 ```
-[YOUR_PRIMARY_JOB_TITLE_1]
-[YOUR_PRIMARY_JOB_TITLE_2]
-[YOUR_KEY_SKILL]
+IT Delivery Manager
+Technical Project Manager
+Tech Lead
+IT Project Manager
+Delivery Lead
+Technischer Projektleiter
+IT Projektleiter
 ```
 
 #### WebSearch-only (`site:` fallback)
 
 ```
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_2]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_COUNTRY]
+site:karriere.at "IT Delivery Manager" Wien
+site:karriere.at "Technical Project Manager" Wien
+site:karriere.at "IT Projektleiter" Wien
+site:stepstone.at "Technical Project Manager" Wien
+site:linkedin.com/jobs "Delivery Manager" Vienna Austria
 ```
 
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
+### Priority 2: IT production, support & service management
 
-These match your domain expertise.
+Run/production ownership, incident management, ITIL.
 
 #### Plain terms (portal CLIs)
 
 ```
-[YOUR_DOMAIN_KEYWORD_1]
-[YOUR_DOMAIN_KEYWORD_2]
+IT Service Delivery Manager
+IT Support Manager
+Application Support Manager
+IT Operations Manager
+Service Manager ITIL
+Leiter IT Support
 ```
 
 #### WebSearch-only (`site:` fallback)
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
+site:karriere.at "IT Service Manager" Wien
+site:karriere.at "IT Support" Teamleiter Wien
+site:stepstone.at "Service Delivery Manager" Wien
+site:linkedin.com/jobs "IT Operations Manager" Vienna Austria
 ```
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
+### Priority 3: Technical solution & AI-adjacent roles
 
-Adjacent roles you could pivot into.
+Adjacent roles bridging business and technology, including AI initiatives.
 
 #### Plain terms (portal CLIs)
 
 ```
-[YOUR_ADJACENT_TITLE_1]
-[YOUR_ADJACENT_TITLE_2]
+Technical Solution Manager
+Solution Manager
+Technical Program Manager
+AI Project Manager
+AI Delivery Manager
+Technical Account Manager
 ```
 
 #### WebSearch-only (`site:` fallback)
 
 ```
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
+site:karriere.at "Solution Manager" Wien
+site:karriere.at "AI" Projektmanager Wien
+site:linkedin.com/jobs "Technical Program Manager" Vienna Austria
+site:linkedin.com/jobs "AI Project Manager" Vienna Austria
 ```
 
-### Priority 4: Broader Technical / Consulting
+### Priority 4: Broader - finance IT, PMO, international organisations
 
-Wider net for general technical roles.
+Wider net: domain (finance/derivatives, migrations, Oracle) and sectors (banks, UN/OSCE/IAEA/OPEC agencies in Vienna, NGOs).
 
 #### Plain terms (portal CLIs)
 
 ```
-[YOUR_KEY_SKILL] developer
-technical consultant
+PMO
+IT Release Manager
+Change Manager IT
+Oracle
+Scrum Master
 ```
 
 #### WebSearch-only (`site:` fallback)
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+site:karriere.at "Release Manager" Wien
+site:karriere.at PMO IT Wien
+site:linkedin.com/jobs "IT Project Manager" bank Vienna
+site:unjobs.org "Information Technology" Vienna
 ```
 
 ## Location Filter
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+Home base: Vienna (relocating there as soon as a job is signed).
+- **Ideal:** Vienna (Wien) and remote/hybrid roles based in Vienna
+- **Acceptable:** Vienna surroundings reachable by public transport (Schwechat, Mödling, Klosterneuburg)
+- **Borderline (fallback only):** Bratislava (~1h by train/bus) - surface but flag
+- **Last resort:** Budapest (~2h40) - would require a local flat; surface only if clearly a strong fit
+- **Too far:** anywhere else in Austria (Graz, Linz, Salzburg...) or other countries, unless fully remote
 
 ## Language Filter
 

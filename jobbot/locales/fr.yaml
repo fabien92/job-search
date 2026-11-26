@@ -1,0 +1,590 @@
+# JobBot — textes des messages Telegram, en français.
+# Mêmes clés que en.yaml (langue de référence ; toute clé absente ici est prise dans en.yaml).
+# {nom} = valeur insérée par le code ; écrire {{ ou }} pour une accolade littérale.
+# HTML Telegram autorisé : <b>, <i>, <code>, <a href>. Écrire &lt; et &gt; pour < et >.
+# Langue choisie avec /lang (enregistrée dans state/settings.json).
+
+lang:
+  self_name: "Français"
+  current: "Langue : <b>{name}</b> ({code}). Changer : /lang {choices}"
+  set: "Langue : <b>{name}</b>. Les messages de JobBot sont maintenant en français."
+  unknown: "Langue inconnue : {code}. Choix : {choices}"
+
+bot:
+  busy: "État occupé (verrou) ; réessaie dans un instant."
+  error: "Erreur : {name}"
+  unknown_command: "Commande inconnue. /help"
+  corrupt_state: "⚠️ Fichier d'état <code>{file}</code> illisible (JSON invalide). Rien n'a été modifié. Restaure-le depuis la sauvegarde ou répare-le à la main, puis réessaie."
+  tracker_malformed: "⚠️ Suivi non mis à jour : la ligne {line} ({company}) contient plus de cellules que l'en-tête (une virgule sans guillemets ?). Répare job_search_tracker.csv, puis renvoie la commande."
+  needs_claude: "Cette commande a besoin de Claude : elle est indisponible avec <code>scoring: rules</code> (voir schedule.yaml)."
+
+help:
+  text: |-
+    <b>JobBot — commandes</b>
+    /search &lt;site|all&gt; — recherche immédiate ({portals}, all)
+    /no &lt;ID&gt; [motif] — rejette l'offre ; le motif (facultatif) enrichit rejection-rules.md ; offre affichée → la suivante arrive
+    /file — offres en attente, numérotées (une seule est affichée à la fois)
+    /voir &lt;n&gt; — affiche tout de suite l'offre n de /file ; l'offre affichée retourne dans la file
+    /rules — règles de rejet numérotées (date, motif, lien de l'offre d'origine)
+    /rule del 2 5-7 — supprime ces règles (après /rules, avec confirmation)
+    /go &lt;ID&gt; [ID…] — prépare la candidature (CV + offre.pdf, en réponse à l'alerte)
+    /sent &lt;ID&gt; — candidature envoyée : CSV « applied », fichiers retirés de Telegram (S… : spontanée) ; puis offre suivante
+    /cancel &lt;ID&gt; — abandon : offre close, plus jamais proposée ; puis offre suivante
+    /reply &lt;ID&gt; oui|non — réponse reçue (oui = positive, non = refus) : statut du CSV, rappels de relance arrêtés ; S… : garder ou purger le contact
+    /pending — candidatures préparées non envoyées (bouton « renvoyer les fichiers »)
+    /firma &lt;nom&gt; — candidatures dans cette entreprise
+    /allow 1 3-5 | /allow all — valide des sites en attente (numéros du récapitulatif)
+    /deny 4 — refuse un site en attente (jamais reproposé)
+    /sites — liste numérotée des sites en attente
+    /spont &lt;entreprise&gt; — prépare une candidature spontanée (brouillons e-mail + LinkedIn, CV) ; rien n'est envoyé
+    /discover &lt;région&gt; — cherche de nouvelles entreprises (propositions à valider)
+    /companies — entreprises proposées, numérotées
+    /accept 1 3-5 | /reject 2 — valide ou écarte des propositions (écartée = jamais reproposée)
+    /block &lt;entreprise&gt; — exclut l'entreprise de toutes les recherches
+    /blocked — entreprises bloquées, numérotées
+    /unblock &lt;n&gt; — débloque une seule entreprise (numéro de /blocked)
+    /region on|off &lt;nom&gt; — active/désactive une région (<code>remote</code> = télétravail monde)
+    /regions — liste des régions
+    /status — dernier passage, prochain passage, alertes en cours
+    /rejets — offres IT éliminées au dernier passage (hors IT masqué)
+    /health — contrôle complet (secrets, Telegram, bun, lualatex, disque, liste blanche, jeton Claude)
+    /lang [en|fr] — langue des messages
+    Mêmes commandes en anglais : /queue = /file, /show = /voir, /rejects = /rejets, /company = /firma
+    /help — cette aide
+
+# Menu des commandes de Telegram (publié par le bot au démarrage et après /lang) : texte brut, sans HTML.
+# Nom des commandes dans le menu (le bot accepte aussi les noms anglais /queue, /show, /rejects, /company).
+command:
+  file: "file"
+  voir: "voir"
+  rejets: "rejets"
+  firma: "firma"
+
+menu:
+  file: "Offres en attente, numérotées"
+  voir: "Afficher l'offre n de /file"
+  go: "Préparer la candidature (CV + offre.pdf)"
+  sent: "Candidature envoyée"
+  cancel: "Abandonner l'offre"
+  reply: "Réponse reçue (oui ou non)"
+  "no": "Rejeter l'offre [motif]"
+  pending: "Candidatures préparées non envoyées"
+  search: "Recherche immédiate (site ou all)"
+  status: "Dernier et prochain passage, alertes"
+  rejets: "Offres IT éliminées au dernier passage"
+  rules: "Règles de rejet numérotées"
+  rule: "Supprimer des règles (del 2 5-7)"
+  firma: "Candidatures dans une entreprise"
+  sites: "Sites en attente de validation"
+  allow: "Valider des sites en attente"
+  deny: "Refuser un site en attente"
+  spont: "Préparer une candidature spontanée"
+  discover: "Chercher de nouvelles entreprises"
+  companies: "Entreprises proposées"
+  accept: "Valider des propositions"
+  reject: "Écarter des propositions"
+  block: "Exclure une entreprise des recherches"
+  blocked: "Entreprises bloquées"
+  unblock: "Débloquer une entreprise"
+  region: "Activer/désactiver une région"
+  regions: "Liste des régions"
+  health: "Contrôle complet"
+  lang: "Langue des messages (en, fr)"
+  help: "Aide"
+
+common:
+  unknown_id: "ID inconnu : {id}"
+  invalid_id: "ID invalide : {id}"
+  one_id: "Refusé : /{command} exige un ID (un seul). Exemple : /{command} 12"
+  bad_selection: "Sélection invalide. Numéros de 1 à {n}, ex. {example}"
+  bad_number: "Numéro invalide : 1 à {n}."
+  list_first: "Fais d'abord /{command} pour obtenir la liste numérotée."
+  age_days: "{d} j {h} h"
+  age_hours: "{h} h"
+  offer: "offre"
+  source: "source"
+  none_m: "aucun"
+  none_f: "aucune"
+  whitelist_missing: "liste blanche non initialisée (scan-settings.json absent)"
+
+# Valeurs du vocabulaire de notation (écrites par Claude) : affichées telles quelles en français.
+values:
+  contract:
+    "permanent": "CDI"
+    "fixed_term_long": "CDD ≥ 12 mois"
+    "fixed_term_short": "CDD < 12 mois"
+    "fixed_term_unknown": "CDD durée inconnue"
+    "part_time": "temps partiel"
+    "unknown": "inconnu"
+    "CDI": "CDI"
+    "CDD ≥ 12 mois": "CDD ≥ 12 mois"
+    "CDD < 12 mois": "CDD < 12 mois"
+    "CDD durée inconnue": "CDD durée inconnue"
+    "temps partiel": "temps partiel"
+    "freelance": "freelance"
+    "inconnu": "inconnu"
+  remote:
+    "onsite": "présentiel"
+    "hybrid": "hybride"
+    "remote": "100 % télétravail"
+    "unknown": "inconnu"
+    "présentiel": "présentiel"
+    "hybride": "hybride"
+    "100 % télétravail": "100 % télétravail"
+    "inconnu": "inconnu"
+
+alert:
+  salary_none: "non affiché"
+  company_none: "Entreprise non indiquée"
+  location_none: "lieu ?"
+  terms: "Contrat : {contract} · Télétravail : {remote} · Salaire : {salary}"
+  adapt_yes: "adaptation oui"
+  adapt_no: "adaptation non"
+  cv: "CV : {variant} · {adapt}{reason}"
+  commands: "/go {id} · /no {id} [motif]"
+
+queue:
+  next_below: "Offre suivante ci-dessous (s'il y en a une)."
+  removed: "Retirée de la file d'attente."
+  expired: "⌛ {n} offre(s) retirée(s) de la file (date limite dépassée) : {names}"
+  arrival: "📥 {new} nouvelle(s) offre(s), {waiting} en attente · /file"
+  stale: "⚠️ En attente depuis {age} : vérifier qu'elle est toujours en ligne."
+  others: "📥 {n} autre(s) en attente · /file"
+  status_shown: "📬 Offre affichée{tag} : #{id} {company} · {link} depuis {age}"
+  status_none: "📬 Aucune offre affichée{tag}"
+  status_line: "{head} · {n} en attente — /file"
+
+sites:
+  none: "Aucun site en attente."
+  title: "<b>Sites en attente de validation</b>"
+  done: "{n}. {domain} — déjà traité"
+  requested_by: " — demandé par {link}"
+  answer: "Répondre /allow 1 3-5, /allow all ou /deny 4."
+  list_changed: "La liste numérotée a changé : de nouveaux sites sont en attente."
+  nothing_to_do: "Rien à faire : ces sites ont déjà été traités."
+  allowed: "{n} site(s) autorisé(s) :"
+  denied: "{n} site(s) refusé(s), jamais reproposé(s) :"
+  regenerated: "Réglages régénérés."
+
+"no":
+  usage: "Refusé : /no exige un ID. Exemple : /no 12 allemand C1 exigé"
+  too_long: "Refusé : motif trop long (300 caractères maximum, une ligne)."
+  done: "Offre #{id} rejetée ({title} — {company})."
+  rule_added: "Règle ajoutée : <i>{rule}</i>"
+  no_rule: "Sans motif : aucune règle ajoutée."
+  test_no_rule: "Mode test : aucune règle écrite."
+  already: "#{id} est déjà rejetée : rien de changé, aucune règle ajoutée."
+
+regions:
+  title: "<b>Régions</b>"
+  remote: "100 % télétravail monde (candidat basé en Europe accepté)"
+  change: "Modifier : /region on|off &lt;nom&gt;"
+
+region:
+  usage: "Usage : /region on|off &lt;nom&gt; (voir /regions)"
+  unknown: "Région inconnue : {name}. Voir /regions"
+  bad_format: "Impossible de modifier {name} : format de regions.yaml inattendu (modifie-le à la main)."
+  enabled: "Région <code>{name}</code> : activée."
+  disabled: "Région <code>{name}</code> : désactivée."
+
+status:
+  title: "<b>Statut JobBot</b>"
+  last_run: "Dernier passage : {when} — {status} · vues {seen} · nouvelles {new} · notées {scored} · alertes {alerted} · {cost} USD"
+  next_run: "Prochain passage prévu vers : {when}"
+  no_run: "Aucun passage enregistré."
+  running: "🔄 Un passage est en cours."
+  alerts: "<b>Alertes en cours</b>"
+  no_alerts: "Aucune alerte en cours."
+  sites_pending: "{n} site(s) en attente de validation : /sites"
+
+rejets:
+  none: "Aucun passage avec détail disponible."
+  title: "<b>Rejets IT — passage {when}</b>"
+  counts: "{shown} affichée(s) · {hidden} hors IT masquée(s)"
+  empty: "Aucune offre IT éliminée."
+  scored: "Notées puis rejetées"
+  rules: "Règles fixes"
+  rules_note: "sans note · intitulé IT"
+  reason:
+    german_level: "🇩🇪 Allemand exigé"
+    contract_short: "⏱ Contrat < 12 mois"
+    freelance: "🧾 Freelance"
+    internship: "🎓 Stage"
+    title_excluded: "🚫 Intitulé exclu"
+    company_excluded: "🏢 Entreprise exclue"
+    company_blocked: "⛔ Entreprise bloquée (/block)"
+    location_outside_regions: "📍 Hors régions"
+    location: "📍 Lieu"
+    remote_region: "🌍 Télétravail hors zone"
+    pure_developer: "💻 Développeur pur"
+    too_old: "⌛ Trop ancienne"
+    no_text: "📄 Texte illisible"
+    expired: "⌛ Expirée"
+    rejection_rule: "📏 Règle /no"
+    other: "❓ Autre"
+
+health:
+  title: "Contrôle JobBot (/health)"
+  queued: "📨 {n} message(s) en file d'attente (renvoyés au prochain envoi réussi)"
+
+search:
+  unknown: "Site inconnu : {site}. Choix : {choices}"
+  busy: "Un passage est déjà en cours ; réessaie plus tard (/status)."
+  linkedin_note: " (LinkedIn reste limité par linkedin_runs_per_day)"
+  started: "Recherche lancée : {site}{note}. Les offres retenues arriveront ici."
+
+go:
+  usage: "Refusé : /go exige un ID. Exemple : /go 12 (plusieurs : /go 12 15)"
+  unknown: "#{id} : ID inconnu"
+  closed:
+    sent: "déjà envoyée"
+    cancelled: "abandonnée"
+    rejected: "rejetée"
+  closed_nothing: "{label} : {status}, rien à préparer"
+  ready: "{label} : déjà prête — /pending pour renvoyer les fichiers"
+  running: "{label} : préparation déjà en cours"
+  how_adapt: "CV adapté par Claude"
+  how_variant: "CV de la variante, zéro token"
+  where_queue: "Retirée de la file ; les fichiers arriveront ici."
+  where_alert: "Les fichiers arriveront en réponse à l'alerte."
+  started: "{label} : préparation lancée ({how}). {where}"
+  # go.py
+  not_installed: "commande /jobbot-go non installée (.claude/commands/jobbot-go.md)"
+  claude_failed: "Claude en échec ({error})"
+  no_overrides: "Claude n'a pas écrit cv_overrides.tex"
+  overrides_refused: "cv_overrides.tex refusé ({error})"
+  compile: "compilation : {errors}"
+  failed: "échec"
+  adapted_note: "CV adapté (cv_overrides.tex)"
+  layout_check: " — mise en page à vérifier : {problems}"
+  layout_unavailable: " — contrôle de mise en page indisponible (Poppler absent), 2 pages vérifiées"
+  summary_cv_adapted: "CV : variante <b>{variant}</b> · adaptée"
+  summary_cv_plain: "CV : variante <b>{variant}</b> · telle quelle"
+  offer_missing: "⚠️ offre.pdf non généré : {error}"
+  apply_link: "Postuler / voir l'offre"
+  after: "Après envoi : /sent {id} · abandon : /cancel {id}"
+  unknown_id: "/go {id} : ID inconnu"
+  no_test_alert: " (pas d'alerte de test récente)"
+  already_ready: "#{id} est déjà prête (/pending pour renvoyer les fichiers)."
+  no_posting: "/go {id} : offre archivée introuvable ({name}) — les offres notées avant la V2 ne sont pas archivées."
+  adapt_dropped: "Adaptation abandonnée, variante envoyée telle quelle : {note}"
+  no_variant: "Aucune variante proposée à la notation : {variant} par défaut"
+  variant_missing: "/go {id} : {name} absent — lancer build_cv_variants.py"
+  incomplete: "⚠️ Envoi incomplet : {errors}\n/pending pour renvoyer #{id}."
+  crashed: "❌ /go {id} en échec : {error}"
+
+files:
+  manual_item: "{name} (envoyé le {when} : {why})"
+  deleted: "Fichiers retirés de Telegram : {n}"
+  manual: "⚠️ <b>À supprimer à la main</b> — l'API Bot ne supprime que les messages de moins de {hours} h :"
+  local_kept: "Dossier local conservé : {name}"
+
+sent:
+  not_pending: "#{id} n'est pas en attente (pas de /go, ou déjà /sent / /cancel). /pending pour la liste."
+  done: "✅ #{id} envoyée — {company} · {title}"
+  csv_test: "inchangé (mode test)"
+  csv_missing: "ligne introuvable ou déjà avancée"
+
+cancel:
+  already: "#{id} est déjà abandonnée."
+  done: "🗑 #{id} abandonnée — {company} · {title} : offre close, plus jamais proposée."
+
+reply:
+  usage: "/reply &lt;ID&gt; oui|non — réponse reçue : oui = positive (entretien), non = refus. Exemple : /reply 12 oui"
+  word_yes: "positive"
+  word_no: "refus"
+  done: "📬 #{id} {company} · {title} : réponse {answer} — CSV {old} → {new}. Rappels de relance arrêtés.{tag}"
+  outcome_hint: "Détails (étapes, retours, outcome.md) : <code>/outcome {company}</code> dans Claude Code."
+  spont_done: "📬 {id} {company} : réponse {answer} enregistrée. Rappels de relance arrêtés.{tag}"
+  not_sent: "#{id} n'a pas été envoyée (/sent {id} d'abord)."
+  closed: "#{id} est déjà close (statut {status})."
+  already: "#{id} : réponse déjà enregistrée ({status})."
+  missing: "#{id} : aucune ligne du tracker avec le repère jobbot #{id}."
+
+followup:
+  spont_label: "candidature spontanée"
+  title: "{tag}⏰ <b>Relance à faire</b> — {ref} {company} · {what}"
+  quiet: "Sans nouvelles depuis {days} jours · relances envoyées : {count}/{max}"
+  offer_hint: "Brouillon : <code>/outcome followup {company}</code> dans Claude Code (il note la relance lui-même ; sinon bouton « Relance envoyée »)."
+  spont_hint: "Contact : {contact}. Envoyez vous-même une courte relance, puis bouton « Relance envoyée »."
+  commands: "Réponse reçue : /reply {id} oui|non"
+  exhausted: "{tag}⌛ <b>Toujours sans réponse</b> — {ref} {company} · {what} : {days} jours depuis la dernière relance ({count}/{max}). Plus aucun rappel."
+  exhausted_offer: "Pour clore : <code>/outcome {company}</code> (no_response) dans Claude Code · réponse reçue : /reply {id} oui|non"
+  exhausted_spont: "Réponse reçue : /reply {id} oui|non"
+  btn_done: "✉️ Relance envoyée"
+  btn_yes: "👍 Réponse : oui"
+  btn_no: "👎 Réponse : non"
+  logged: "✉️ #{id} : relance notée ({count}/{max}). Prochain rappel dans {days} jours sans réponse.{tag}"
+  logged_last: "✉️ #{id} : relance notée ({count}/{max}, la dernière). Dans {days} jours sans réponse : un dernier avis, puis plus rien.{tag}"
+  already_today: "#{id} : relance déjà notée aujourd'hui."
+  not_open: "#{id} : aucune relance à noter (statut {status})."
+
+contact:
+  question: "📇 <b>Garder ce contact ?</b> {id} {company} — {contact}\nPurger = nom, adresse et LinkedIn effacés (seule une empreinte reste, pour ne jamais le recontacter)."
+  btn_keep: "📇 Garder"
+  btn_purge: "🧹 Purger"
+  kept: "📇 {id} {company} : contact gardé.{tag}"
+  purged: "🧹 {id} {company} : contact purgé (brouillons supprimés : {files}). L'entreprise et une empreinte restent : jamais reproposé.{tag}"
+  already_purged: "{id} : contact déjà purgé."
+  already_kept: "{id} : contact déjà gardé ({date})."
+  not_sent: "{id} : rien à décider (statut {status})."
+
+file:
+  shown: "Affichée{tag} : <b>#{id}</b> · {score} · {link} · {company} (depuis {age})"
+  empty: "File d'attente vide : aucune autre offre."
+  title: "<b>Offres en attente : {n}</b>"
+  published: " · publiée le {date}"
+  queued_since: "en file depuis {age}"
+  show_hint: "Afficher : /voir &lt;n&gt; (l'offre affichée retourne dans la file)"
+
+voir:
+  usage: "Refusé : /voir exige un numéro de /file. Exemple : /voir 2"
+  gone: "Cette offre n'est plus dans la file (liste modifiée). Refais /file."
+  done: "Offre #{id} affichée ci-dessus ; l'offre précédente est retournée dans la file."
+
+pending:
+  none: "Aucune candidature en attente d'envoi."
+  title: "<b>En attente d'envoi : {n}</b>"
+  line: "{link} · /go le {when} · depuis {age} · CV {variant}{adapted}"
+  adapted: " adapté"
+  button: "📎 #{id} renvoyer les fichiers"
+
+resend:
+  gone: "#{id} n'est plus en attente."
+  missing: "{name} : fichier local absent"
+  done: "#{id} : {n} fichier(s) renvoyé(s)."
+
+firma:
+  usage: "Refusé : /firma exige un nom. Exemple : /firma Erste"
+  none: "Aucune candidature pour « {query} »."
+  title: "<b>Candidatures — {query} : {n}</b>"
+  status: "{date} · statut <b>{status}</b> · {link}"
+  no_letter: "aucune"
+  cv_sent: "CV envoyé : {cv} · lettre : {letter}"
+  cv_prepared: "CV préparé : {cv} · lettre : {letter}"
+
+rules:
+  free: "(format libre)"
+  none: "Aucune règle de rejet."
+  title: "<b>Règles de rejet : {n}</b>"
+  delete_hint: "Supprimer : /rule del 2 5-7"
+
+rule:
+  usage: "Usage : /rule del 2 5-7 (numéros de /rules)"
+  confirm_title: "<b>Supprimer {n} règle(s) ?</b>"
+  confirm_valid: "Confirmation valable {minutes} min."
+  confirm_button: "🗑 Confirmer"
+  cancel_button: "Annuler"
+  expired: "Confirmation expirée ou déjà utilisée : refais /rules puis /rule del."
+  deleted: "{n} règle(s) supprimée(s)."
+  missing: "⚠️ {n} règle(s) modifiée(s) ou déjà retirée(s) entre-temps, non supprimée(s) :"
+  cancelled: "Suppression annulée, aucune règle retirée."
+
+company:
+  usage: "Refusé : /{command} exige un nom d'entreprise. Exemple : /{command} ACME GmbH"
+  invalid: "Nom invalide : {name}"
+
+block:
+  already: "{name} est déjà bloquée. /blocked pour la liste."
+  done: "⛔ {name} bloquée : exclue de toutes les recherches (portails et pages carrière), de la découverte et des candidatures spontanées."
+  covers: "Couvre aussi : {names}"
+  undo: "Annuler : /blocked puis /unblock &lt;n&gt;"
+
+blocked:
+  none: "Aucune entreprise bloquée."
+  title: "<b>Entreprises bloquées : {n}</b>"
+  hint: "Débloquer une entreprise : /unblock &lt;n&gt;"
+
+unblock:
+  usage: "Refusé : /unblock exige un seul numéro de /blocked. Exemple : /unblock 2"
+  gone: "Cette entreprise n'est plus bloquée (liste modifiée). Refais /blocked."
+  done: "✅ {name} débloquée : de nouveau prise en compte dans les recherches.\nLa numérotation a changé : refais /blocked avant un autre /unblock."
+
+discover:
+  usage: "Refusé : /discover exige une région activée ({regions}). Exemple : /discover wien"
+  busy: "Une découverte est déjà en cours."
+  busy_cmd: "/discover : une découverte est déjà en cours."
+  started: "Découverte lancée pour {region}. Les propositions arriveront ici (/companies pour les valider)."
+  bad_region: "/discover : région {region} inconnue ou désactivée (/regions)."
+  not_installed: "/discover : commande /jobbot-discover non installée (voir INSTALL.md, cp jobbot/commands/…)."
+  failed: "/discover {region} : échec ({error})."
+  no_file: "aucun fichier écrit"
+  result: "<b>Découverte {region}</b> : {n} entreprise(s) proposée(s) · déjà connues {known} · exclues {excluded} · bloquées {blocked} · déjà contactées {contacted}"
+  invalid: " · invalides {n}"
+  cost: "coût estimé {cost} USD"
+  validate: "Valider : /companies puis /accept 1 3-5 ou /reject 2"
+
+companies:
+  none: "Aucune entreprise proposée. /discover &lt;région&gt; pour en chercher."
+  title: "<b>Entreprises proposées : {n}</b>"
+  answer: "Répondre /accept 1 3-5, /accept all ou /reject 2."
+  nothing_to_do: "Rien à faire : déjà traitées. Refais /companies."
+  accepted: "✅ {n} entreprise(s) ajoutée(s) aux cibles. Leurs sites passeront par la liste blanche (/sites)."
+  rejected: "🗑 {n} entreprise(s) écartée(s), jamais reproposée(s)."
+  skipped: "({n} déjà traitée(s))"
+
+spont:
+  refused: "/spont {name} : refusé — {why}."
+  running: "{name} : préparation déjà en cours."
+  running_cmd: "/spont {name} : préparation déjà en cours."
+  started: "Préparation lancée pour {name} : contact (Impressum, page carrière, puis LinkedIn), brouillons e-mail et LinkedIn, CV. Rien ne sera envoyé."
+  already: "{id} est déjà en statut {status}."
+  sent: "✅ {id} envoyée — {company} ({contact}){tag}.\nCe contact et cette entreprise ne seront plus jamais reproposés."
+  cancelled: "🗑 {id} abandonnée — {company}{tag} : plus reproposée."
+  # spontaneous.py
+  unknown_company: "entreprise inconnue de companies.csv (/companies, import_companies.py)"
+  company_status: "entreprise en statut {status}"
+  already_contacted: "déjà contactée ou candidature déjà envoyée — jamais reproposée"
+  no_website: "site officiel inconnu dans companies.csv"
+  source_unreadable: "source illisible ({reason})"
+  email_not_on_page: "adresse absente de la page source"
+  output_unreadable: "sortie illisible"
+  email_invalid: "adresse e-mail invalide, ignorée"
+  email_no_source: "adresse sans source sur le site officiel, ignorée"
+  email_unconfirmed: "adresse non confirmée ({why}), ignorée"
+  linkedin_invalid: "profil LinkedIn invalide ou sans source, ignoré"
+  linkedin_too_long: "message LinkedIn trop long ({n} > {max}), non retenu"
+  email_incomplete: "brouillon d'e-mail incomplet, adresse non retenue"
+  no_contact: "aucun contact vérifié (ni adresse confirmée sur le site officiel, ni profil LinkedIn)"
+  summary_title: "<b>{tag}✉️ {id} · candidature spontanée · {name}</b>"
+  summary_contact: "Contact : {contact}"
+  summary_email: "E-mail : <code>{email}</code> · {source}"
+  summary_linkedin: "LinkedIn : {profile} · {source}"
+  profile: "profil"
+  no_message: " (pas de message retenu)"
+  summary_cv: "CV : variante <b>{variant}</b> · site : {site}"
+  summary_after: "Rien n'est envoyé : copie le brouillon, envoie toi-même, puis /sent {id} · abandon : /cancel {id}"
+  site_not_allowed: "/spont {name} : le site officiel {site} n'est pas autorisé. Il est en attente : /sites puis /allow, et relance /spont."
+  not_installed: "/spont : commande /jobbot-spontaneous non installée (voir INSTALL.md)."
+  duplicate: "contact déjà sollicité ({id})"
+  nothing: "/spont {name} : rien de préparé — {why}."
+  variant_missing: "/spont : {name} absent — lancer build_cv_variants.py"
+
+spont_list:
+  none: "<b>Candidatures spontanées</b> : aucune entreprise à proposer ce soir (toutes contactées, bloquées ou listées récemment)."
+  title: "<b>Candidatures spontanées — idées du soir</b>"
+  to_allow: " · site à autoriser"
+  hint: "Rien n'est envoyé : /spont prépare le brouillon (e-mail + LinkedIn) et le CV."
+
+telegram:
+  deferred: "<i>(différé — prévu le {when})</i>"
+  queue_full: "⚠️ File Telegram pleine : {n} message(s) ancien(s) perdu(s)."
+  unreadable: "fichier illisible : {error}"
+  send_refused: "envoi refusé"
+  too_old: "plus de {hours} h"
+  delete_refused: "suppression refusée"
+
+daily:
+  title: "<b>Récapitulatif JobBot — {date}</b>"
+  alive: "✅ <b>JobBot actif</b>"
+  alive_no_run: "⚠️ <b>JobBot actif, mais aucun passage depuis 24 h</b> — vérifier com.jobbot.scan (launchd)"
+  last_run: "Dernier passage : {when} ({status}) · prochain vers {next}"
+  all_green: "tout est au vert"
+  check: "Contrôle : {icon} {detail} (/health pour le détail)"
+  initial_stock: "⏳ Stock initial : offres en attente de notation : {n}"
+  tg_queued: "📨 {n} message(s) Telegram en file d'attente"
+  last_24h: "24 h : {runs} passage(s) ({failed} en échec) · vues {seen} · nouvelles {new} · notées {scored} · alertes {alerted} · coût estimé {cost} USD"
+  nothing_new: "Aucune nouvelle offre depuis hier."
+  stale_title: "<b>⏰ Préparées, pas encore envoyées (&gt; {hours} h) : {n}</b>"
+  stale_item: "• #{id} {company} · {link} — depuis {age} · /sent {id} · /cancel {id}"
+  stale_hint: "/pending pour renvoyer les fichiers"
+  followups: "✉️ <b>Relances à faire : {n}</b> — {ids} (rappels ci-dessus, /reply &lt;ID&gt; oui|non)"
+
+weekly:
+  title: "<b>Bilan hebdomadaire JobBot — {start} → {end}</b>"
+  runs: "Passages : {runs} ({failed} en échec)"
+  offers: "Offres vues {seen} · nouvelles {new} · notées {scored} · retenues (alertes) {alerted}"
+  applications_one: "Candidatures : /go {go} (dont {adapted} CV adapté) · envoyées {sent} · abandonnées {cancelled} · en attente {pending}"
+  applications_many: "Candidatures : /go {go} (dont {adapted} CV adaptés) · envoyées {sent} · abandonnées {cancelled} · en attente {pending}"
+  answers: "Réponses (statuts du CSV, toutes dates) : {detail}"
+  no_answers: "Réponses : aucune enregistrée dans le CSV"
+  replies: "Cette semaine (/reply) : positives {yes} · refus {no} · relances notées {followups}"
+  empty_sites: "Sites sans résultat cette semaine : {sites}"
+  down_sites: "Sites en panne : {sites}"
+  down_days: "{site} ({n} j)"
+  cost: "Coût estimé : {total} USD (notation {scan} · /go {go})"
+
+monitor:
+  crashed: "❌ Passage en échec avant la fin : {error}"
+  unknown_error: "erreur inconnue"
+  claude_auth: "🔑 Claude : authentification ou quota en échec (passage {run}).\n<code>{error}</code>\nVérifie CLAUDE_CODE_OAUTH_TOKEN (claude setup-token) ou le quota de l'abonnement."
+  claude_budget: "💶 Plafond --max-budget-usd atteint (passage {run}, {cost} USD). Les offres non notées reviendront au prochain passage."
+  see_log: "voir le journal"
+  run_failed: "❌ Passage {run} en échec : {detail}"
+  cap_reached: "⚠️ Plafond max_scored_per_run atteint (passage {run}) : {n} offres reportées au prochain passage."
+  site_down: "🔌 {site} : toutes les requêtes ont échoué (passage {run})."
+  zero: "🕳 {site} : 0 offre depuis {days} jours (parseur cassé ou site bloqué ?)."
+  reminder: "(rappel) {text}"
+  recovered: "✅ Passages rétablis."
+  blocked_hosts: "🚧 Hôte(s) bloqué(s), en attente de validation (récapitulatif quotidien, /allow /deny) :"
+
+preflight:
+  title: "Contrôle JobBot"
+  run_cancelled: "❌ <b>Passage annulé</b> — contrôle préalable en échec :"
+  recovered: "✅ Contrôle préalable de nouveau au vert."
+  token_alert: "🔑 Jeton Claude : {detail} — {action}"
+  internal: "erreur interne : {error}"
+  missing: "absent(s) : {names}"
+  complete: "compléter {path}"
+  chat_id: "TELEGRAM_CHAT_ID n'est pas numérique"
+  fix: "corriger {path}"
+  mode: "{name} en mode {mode}"
+  present: "présents"
+  no_token: "pas de TELEGRAM_TOKEN"
+  see_secrets: "voir secrets"
+  token_refused: "jeton refusé ({error})"
+  botfather: "recréer le jeton avec @BotFather"
+  unreachable: "injoignable ({error}) — messages mis en file"
+  not_found: "{cmd} introuvable (PATH={path})"
+  install_bun: "installer bun (curl -fsSL https://bun.sh/install | bash) ou corriger PATH"
+  portal_missing: "CLI de portail absente : {names}"
+  restore_skills: "restaurer .agents/skills/"
+  texbin: "vérifier /Library/TeX/texbin dans le PATH"
+  venv_missing: "jobbot/.venv absent"
+  import_failed: "import impossible"
+  venv_ok: "telegram + yaml importables"
+  disk_low: "{free} Go libres sur {path} (< {min} Go)"
+  free_disk: "libérer de l'espace disque"
+  disk_on: "{free} Go libres sur {path}"
+  disk_free: "{free} Go libres"
+  sites_unreadable: "sites.yaml illisible : {error}"
+  fix_sites: "corriger jobbot/config/sites.yaml"
+  sites_missing: "sites.yaml absent"
+  no_site: "aucun site autorisé"
+  import_seed: "importer sites-seed.md ou /allow"
+  whitelist_ok: "{n} domaines autorisés, {pending} en attente"
+  rule_missing: "{rule} absente"
+  rule_missing_m: "{rule} absent"
+  file_missing: "{name} absent"
+  file_unreadable: "{name} illisible"
+  sandbox_flags: "{name} : drapeaux du bac à sable incorrects"
+  strict_missing: "{name} : strictAllowlist absent"
+  domains_stale: "{name} : domaines différents de sites.yaml (réglages périmés)"
+  regenerate: "régénérer : jobbot/.venv/bin/python jobbot/scripts/gen_settings.py (depuis ton terminal)"
+  sandbox_ok: "réglages à jour ({n} domaines)"
+  oauth_missing: "CLAUDE_CODE_OAUTH_TOKEN absent"
+  setup_token: "claude setup-token, puis secrets.env"
+  expiry_unknown: "échéance inconnue (CLAUDE_CODE_OAUTH_TOKEN_CREATED absent ou invalide)"
+  add_created: "ajouter CLAUDE_CODE_OAUTH_TOKEN_CREATED=AAAA-MM-JJ dans secrets.env"
+  token_expired: "jeton expiré depuis le {date}"
+  renew_token: "claude setup-token, mettre à jour secrets.env (jeton + date)"
+  expires: "expire le {date} (dans {days} j)"
+  renew_before: "claude setup-token avant l'échéance, puis secrets.env"
+
+# Transmis à Claude dans le lot de notation (prefilter.py) : langue de justification, adapt_reason, drapeaux.
+scoring:
+  language: "French"
+  flag:
+    german_check: "allemand à vérifier"
+    duration_unknown: "durée inconnue"
+    suspicious: "contenu suspect"
+    detail_unavailable: "détail indisponible"
+
+backup:
+  failed: "💾 Sauvegarde nocturne en échec : <code>{error}</code>"
+
+scan:
+  no_whitelist: "liste blanche non initialisée : lancer jobbot/scripts/import_seed.py"
+
+offer:
+  unreadable: "offre archivée illisible : {error}"

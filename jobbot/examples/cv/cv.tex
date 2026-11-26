@@ -1,0 +1,78 @@
+%!TEX TS-program = lualatex
+%!TEX encoding = UTF-8 Unicode
+%
+% JobBot block CV — FICTIONAL EXAMPLE (Jane Doe). Copy this folder to documents/cv/jobbot/
+% (gitignored) and replace the content of blocks/ and variants/ with your own.
+% Layout = templates/cv/moncv-awesome, unchanged.
+%
+% Load order (later files win):
+%   blocks/content.tex      default macros (profile, achievements, skills, order of blocks)
+%   variants/\cvvariant.tex variant overrides
+%   \cvoverridesfile        per-application overrides (default cv_overrides.tex; /go sets one per ID), if present
+\providecommand{\cvvariant}{delivery}
+\def\tpl{../../../templates/cv/moncv-awesome}
+
+\documentclass[11pt, a4paper]{\tpl/awesome-cv}
+
+% Identity: private/identity.tex when it exists (gitignored), else the fictional example.
+\IfFileExists{../../../private/identity.tex}%
+  {\input{../../../private/identity.tex}}%
+  {\input{../../../templates/identity_example.tex}}
+
+%-------------------------------------------------------------------------------
+% CONFIGURATION (template layout — do not change)
+%-------------------------------------------------------------------------------
+\geometry{left=1.3cm, top=0.8cm, right=1.3cm, bottom=1.4cm, footskip=0.4cm}
+
+\colorlet{awesome}{awesome-red}
+\setbool{acvSectionColorHighlight}{true}
+\renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
+
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{afterpage}
+
+\input{blocks/content.tex}
+\input{variants/\cvvariant.tex}
+\providecommand{\cvoverridesfile}{cv_overrides.tex}\IfFileExists{\cvoverridesfile}{\input{\cvoverridesfile}}{}
+
+%-------------------------------------------------------------------------------
+\begin{document}
+
+\definecolor{accent}{HTML}{0A66C2}
+
+\input{blocks/header.tex}
+
+\makecvfooter{}{}{}
+
+%-------------------------------------------------------------------------------
+% SECTIONS
+%-------------------------------------------------------------------------------
+\cvsection{Profile}
+
+\cvparagraph{
+\cvProfileText
+}
+
+\vspace{-2mm}
+
+\cvsection{Key Achievements}
+
+\begin{itemize}
+
+\item \cvAchievementOne
+
+\item \cvAchievementTwo
+
+\item \cvAchievementThree
+
+\end{itemize}
+
+\input{blocks/experience.tex}
+\input{blocks/education.tex}
+\input{blocks/training.tex}
+\input{blocks/skills.tex}
+\input{blocks/languages.tex}
+
+\end{document}

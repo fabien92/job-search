@@ -4,6 +4,20 @@ framework_version: 1.4.9
 
 # CV Templates and Tailoring Guide
 
+<!-- BEGIN ACTIVE-TEMPLATE (managed by /add-template - do not edit by hand) -->
+> **Active template override: `moncv-awesome`**
+>
+> A custom template is active. Where this block conflicts with the stock guidance below, this block wins. Structural advice below (tailoring, page-budget, cutting rules) still applies.
+>
+> - **Template skeleton:** `templates/cv/moncv-awesome/template.tex` — use this as the structural reference instead of the stock template
+> - **Manifest:** `templates/cv/moncv-awesome/TEMPLATE.md` — read this for style rules and known pitfalls before drafting
+> - **Source extension:** `.tex`
+> - **Compile command:** `rm -f <file>.pdf && mkdir -p build && lualatex -interaction=nonstopmode -output-directory=build <file>.tex && mv build/<file>.pdf ./` (not the command named in the stock guidance below — `/apply`'s compile step must use this instead). Run it from the output directory (`cv/`). It redirects to `build/`, so the log is in `build/`, and `/apply`'s Step 5e cleanup must delete that `build/` folder too
+> - **Fonts:** Source Sans 3 and Roboto — TeX Live OTF files loaded by file name by the class (no system font needed); Font Awesome 6 via the `fontawesome6` package
+> - **Page limit:** exactly 2 page(s)
+> - **Output file:** `cv/main_<company>_<role>.tex`; do not copy the class or icons — keep the skeleton's first line `\def\tpl{../templates/cv/moncv-awesome}`, which points `\documentclass` and the icons at the template folder from `cv/`
+<!-- END ACTIVE-TEMPLATE -->
+
 <!-- SETUP: Profile statements and section ordering are personalized by running /setup -->
 
 ## Template: LaTeX moderncv (Banking Style)
